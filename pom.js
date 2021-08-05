@@ -4,7 +4,6 @@ var friendsRod = [];
 var friendsDat = [];
 var friendsVin = [];
 var friendsTvo = [];
-var allIme = allRod = allDat = allVin = allTvo = [];
 
 var fis = new ActiveXObject('Scripting.FileSystemObject')
     .GetFile('soldaten/_friends.txt').OpenAsTextStream(1, -1);
@@ -57,14 +56,6 @@ var rxImeRod = [
     /^(.+) пошатнулся от богатырского удара (.+)\.( \(\*+\))?$/
 ];
 
-var rxImeIme = [
-    /^(.+) подгорел.? в нескольких местах, когда (.+) дыхнул.? на не..? огнем\./
-];
-
-var rxImeDat = [
-    /^(.+) попытал.?с. нанести (.+) удар в спину, но ...? заметили\.$/
-];
-
 var rxImeVin = [
     /^(.+) промазал.?, когда хотел.? ударить (.*)\.$/,
     /^(.+) попытал.?с. [а-я]+ (.*), но .*\.$/,
@@ -78,6 +69,14 @@ var rxImeVin = [
     /^(.+) ловко подсек.?.? (.+), уронив ...? на землю\.$/
 ];
 
+var rxImeIme = [
+    /^(.+) подгорел.? в нескольких местах, когда (.+) дыхнул.? на не..? огнем\./
+];
+
+var rxImeDat = [
+    /^(.+) попытал.?с. нанести (.+) удар в спину, но ...? заметили\.$/
+];
+
 var rxRodRod = [
     /^Удар (.+) прошел мимо (.+)\.$/,
     /^Доспехи (.+) полностью поглотили удар (.+)\.$/,
@@ -86,8 +85,7 @@ var rxRodRod = [
 ];
 
 var rxRodVin = [
-    /^Точное попадение (.*) вывело (.*) из строя\.$/,
-    /^Вы избежали попытки (.*) хлестнуть (.*)\.$/
+    /^Точное попадение (.*) вывело (.*) из строя\.$/
 ];
 
 var lastOtst = 0;
@@ -95,52 +93,138 @@ trig(function () {
     lastOtst = now();
 }, /^/, 'f100:AUTOPOM');
 
-trig(function (aa) {
-    var ime = aa[1];
-    var tvo = aa[2];
-    ime = name_from_titles(ime);
-
-    if (friendsIme[ime] && tvo !== 'вами' && tvo !== 'ВАМИ') {
-        allTvo.push(tvo);
-    } else if (friendsTvo[tvo] && ime !== 'вы' && ime !== 'Вы') {
-        allIme.push(ime);
-    }
-}, rxIme2Tvo, 'fc100:AUTOPOM');
-
-trig(function (aa) {
-    var ime = aa[1];
-    var vin = aa[4];
-
-    if (friendsIme[ime] && vin !== 'вас' && vin !== 'Вас') {
-        allVin.push(vin);
-    } else if (friendsVin[vin] && ime !== 'вы' && ime !== 'Вы') {
-        allIme.push(ime);
-    }
-}, rxFight1, 'fc100:AUTOPOM');
-
-
 jmc.RegisterHandler('Prompt', 'onPrompt()');
+
 function onPrompt() {
-    var lines = jmc.Event;
-    var arr = lines.split('\r?\n');
-    var promptLine = arr[arr.length - 1].replace(/\x1B\[[01];\d{2}m/g, '');
+    var lines = jmc.Event.replace(/\x1B\[\d;\d{2}m/g, '').split(/\r?\n/);
+    var promptLine = lines[lines.length - 1];
 
     if (promptLine.substring(promptLine.length - 2) !== '> ') {
         return;
     }
 
+    var lagOz = promptLine.indexOf(' ОЗ:0') !== -1 ? 0 : 1;
+    var lagPn = promptLine.indexOf(' Пн:') !== -1 ? 1 : 0;
+    var lagMo = promptLine.indexOf(' Мо:') !== -1 ? 1 : 0;
+    var lagOg = promptLine.indexOf(' Ог:') !== -1 ? 1 : 0;
     var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
 
-    var trg = '';
-    if (!trg && !!allIme.length) { trg = make_alias(allIme[0]) }
-    if (!trg && !!allVin.length) { trg = make_alias(allVin[0]) }
-    if (!trg && !!allTvo.length) { trg = make_alias(allTvo[0]) }
-    if (!trg && !!allRod.length) { trg = make_alias(allRod[0]) }
-    if (!trg && !!allDat.length) { trg = make_alias(allDat[0]) }
-    allIme = allRod = allDat = allVin = allTvo = [];
+    var allIme = allRod = allDat = allVin = allTvo = [];
+    for (var i = 0; i < lines.length; i++) {
+        var line1 = lines[i];
+        var aa;
 
-    if (trg && !iFight) {
-        jmc.parse('пн ' + trg);
+        if (aa = line1.match(rxFight1)) {
+            var ime = aa[1];
+            var vin = aa[4];
+
+            if (friendsVin[vin] && ime !== 'вы' && ime !== 'Вы') {
+                allIme.push(ime);
+            } else if (friendsIme[ime] && vin !== 'вас' && vin !== 'Вас') {
+                allVin.push(vin);
+            }
+        }
+
+        if (aa = line1.match(rxIme2Tvo)) {
+            var ime = aa[1];
+            var tvo = aa[2];
+            ime = name_from_titles(ime);
+        
+            if (friendsTvo[tvo] && ime !== 'вы' && ime !== 'Вы') {
+                allIme.push(ime);
+            } else if (friendsIme[ime] && tvo !== 'вами' && tvo !== 'ВАМИ') {
+                allTvo.push(tvo);
+            }
+        }
+
+        for (var j = 0; j < rxImeRod.length; j++) {
+            if (aa = line1.match(rxImeRod[j])) {
+                var ime = aa[1];
+                var rod = aa[2];
+
+                if (friendsRod[rod] && ime !== 'вы' && ime !== 'Вы') {
+                    allIme.push(ime);
+                } else if (friendsIme[ime] && rod !== 'вас' && rod !== 'Вас') {
+                    allRod.push(rod);
+                }
+            }
+        }
+
+        for (var j = 0; j < rxImeVin.length; j++) {
+            if (aa = line1.match(rxImeVin[j])) {
+                var ime = aa[1];
+                var vin = aa[2];
+
+                if (friendsVin[vin] && ime !== 'вы' && ime !== 'Вы') {
+                    allIme.push(ime);
+                } else if (friendsIme[ime] && vin !== 'вас' && vin !== 'Вас') {
+                    allVin.push(vin);
+                }
+            }
+        }
+
+        for (var j = 0; j < rxImeIme.length; j++) {
+            if (aa = line1.match(rxImeIme[j])) {
+                var ime = aa[1];
+                var ime2 = aa[2];
+
+                if (friendsIme[ime2] && ime !== 'вы' && ime !== 'Вы') {
+                    allIme.push(ime);
+                } else if (friendsIme[ime] && ime2 !== 'вы' && ime2 !== 'Вы') {
+                    allIme.push(ime2);
+                }
+            }
+        }
+
+        for (var j = 0; j < rxImeDat.length; j++) {
+            if (aa = line1.match(rxImeDat[j])) {
+                var ime = aa[1];
+                var dat = aa[2];
+
+                if (friendsDat[dat] && ime !== 'вы' && ime !== 'Вы') {
+                    allIme.push(ime);
+                } else if (friendsIme[ime] && dat !== 'вам' && dat !== 'Вам') {
+                    allDat.push(dat);
+                }
+            }
+        }
+
+        for (var j = 0; j < rxRodRod.length; j++) {
+            if (aa = line1.match(rxRodRod[j])) {
+                var rod = aa[1];
+                var rod2 = aa[2];
+
+                if (friendsRod[rod] && rod2 !== 'вас' && rod2 !== 'Вас') {
+                    allRod.push(rod2);
+                } else if (friendsRod[rod2] && rod !== 'вас' && rod !== 'Вас') {
+                    allRod.push(rod);
+                }
+            }
+        }
+
+        for (var j = 0; j < rxRodVin.length; j++) {
+            if (aa = line1.match(rxRodVin[j])) {
+                var rod = aa[1];
+                var vin = aa[2];
+
+                if (friendsVin[vin] && rod !== 'вас' && rod !== 'Вас') {
+                    allRod.push(rod);
+                } else if (friendsRod[rod] && vin !== 'вас' && vin !== 'Вас') {
+                    allVin.push(vin);
+                }
+            }
+        }
+    }
+
+    var trg0 = '';
+    if (!trg0 && !!allIme.length) { trg0 = make_alias(allIme[0]) }
+    if (!trg0 && !!allVin.length) { trg0 = make_alias(allVin[0]) }
+    if (!trg0 && !!allTvo.length) { trg0 = make_alias(allTvo[0]) }
+    if (!trg0 && !!allRod.length) { trg0 = make_alias(allRod[0]) }
+    if (!trg0 && !!allDat.length) { trg0 = make_alias(allDat[0]) }
+
+    if (trg0 && !iFight) {
+        jmc.parse('пн ' + trg0);
     }
 }
 
