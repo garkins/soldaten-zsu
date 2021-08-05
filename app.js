@@ -1,7 +1,14 @@
-jmc.showme("Версия 1.00");
 var myName = '';
 var myProf = '';
 var botovods = ['Зурис', 'Делвин', 'Полыхай', 'Умеля', 'Трогвард', 'Шабу', 'Бельверус', 'Лотта'];
+
+// текущая версия
+var fis = new ActiveXObject('Scripting.FileSystemObject')
+    .GetFile('soldaten/_version.txt')
+    .OpenAsTextStream(1, -1);
+var version = fis.ReadLine();
+fis.Close();
+jmc.showme('Версия ' + version);
 
 // управление окошками
 var wShown = 0;
@@ -105,6 +112,8 @@ function onLoad() {
     registeredTriggers = registeredTriggers.sort(function (a, b) {
         return a.priority - b.priority;
     });
+
+    // updateMe();
 }
 // \триги как в ммс
 
@@ -194,4 +203,15 @@ for (var i = 0; i < layoutTalks.length; i++) {
     trig(function (aa) {
         jmc.woutput(2, '[' + hhmm() + '] ' + aa[0]);
     }, layoutTalks[i], 'f10000:TALKS');
+}
+
+function readUrl(url) {
+    var file1 = new ActiveXObject("Microsoft.XMLHTTP");
+    file1.open("GET", url, false);
+    file1.send();
+    return file1.responseText;
+}
+
+function updateMe() {
+    var remoteVersion = readUrl('');
 }
