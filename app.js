@@ -5,7 +5,7 @@ var botovods = ['Зурис', 'Делвин', 'Полыхай', 'Умеля', '�
 // текущая версия
 var fis = new ActiveXObject('Scripting.FileSystemObject')
     .GetFile('soldaten/_version.txt')
-    .OpenAsTextStream(1, -1);
+    .OpenAsTextStream(1, 0);
 var version = fis.ReadLine();
 fis.Close();
 jmc.showme('Версия ' + version);
@@ -113,7 +113,7 @@ function onLoad() {
         return a.priority - b.priority;
     });
 
-    // updateMe();
+    updateMe();
 }
 // \триги как в ммс
 
@@ -213,5 +213,7 @@ function readUrl(url) {
 }
 
 function updateMe() {
-    var remoteVersion = readUrl('');
+    var remoteVersion = readUrl('https://raw.githubusercontent.com/yuraigle/soldaten-js/main/_version.txt');
+    jmc.showme('AZAZA');
+    jmc.showme(remoteVersion);
 }
