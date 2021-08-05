@@ -1,9 +1,21 @@
 var friends = [];
+var friendsIme = [];
+var friendsRod = [];
+var friendsDat = [];
+var friendsVin = [];
+var friendsTvo = [];
+var allIme = allRod = allDat = allVin = allTvo = [];
+
 var fis = new ActiveXObject('Scripting.FileSystemObject')
-    .GetFile('settings/friends.txt').OpenAsTextStream(1, -1);
+    .GetFile('soldaten/_friends.txt').OpenAsTextStream(1, -1);
 while (!fis.AtEndOfStream) {
     var a = fis.ReadLine().split(':');
     friends.push({ ime: a[0], rod: a[1], dat: a[2], vin: a[3], tvo: a[4] });
+    friendsIme[a[0]] = 1;
+    friendsRod[a[1]] = 1;
+    friendsDat[a[2]] = 1;
+    friendsVin[a[3]] = 1;
+    friendsTvo[a[4]] = 1;
 }
 fis.Close();
 
@@ -28,7 +40,7 @@ var rxFight1 = new RegExp('^(.*?) ' +
     '(.*?)\.( [(][*]+[)])?$'
 );
 
-var rxIme2Tvo = /^(.+) сражается с (.*?)(, сидя верхом на .+)?! $/;
+var rxIme2Tvo = /^(.+) сражается с (.*?)(, сидя верхом на .+)?! (\([а-я]+ аура\) )?$/;
 
 var rxImeRod = [
     /^(.+) уклонил.?с. от атаки (.+)$/,
@@ -83,22 +95,55 @@ trig(function () {
     lastOtst = now();
 }, /^/, 'f100:AUTOPOM');
 
-// trig(function (aa) {
-// }, rxIme2Tvo, 'f100:AUTOPOM');
+trig(function (aa) {
+    var ime = aa[1];
+    var tvo = aa[2];
+    ime = name_from_titles(ime);
 
-trig(function () {
-    jmc.showme('TARGET');
-}, /^:.+@/, 'f100:TARGET1');
+    if (friendsIme[ime] && tvo !== 'вами' && tvo !== 'ВАМИ') {
+        allTvo.push(tvo);
+    } else if (friendsTvo[tvo] && ime !== 'вы' && ime !== 'Вы') {
+        allIme.push(ime);
+    }
+}, rxIme2Tvo, 'fc100:AUTOPOM');
+
+trig(function (aa) {
+    var ime = aa[1];
+    var vin = aa[4];
+
+    if (friendsIme[ime] && vin !== 'вас' && vin !== 'Вас') {
+        allVin.push(vin);
+    } else if (friendsVin[vin] && ime !== 'вы' && ime !== 'Вы') {
+        allIme.push(ime);
+    }
+}, rxFight1, 'fc100:AUTOPOM');
+
 
 jmc.RegisterHandler('Prompt', 'onPrompt()');
-
 function onPrompt() {
-    jmc.showme('PROMPT');
+    var lines = jmc.Event;
+    var arr = lines.split('\r?\n');
+    var promptLine = arr[arr.length - 1].replace(/\x1B\[[01];\d{2}m/g, '');
+
+    if (promptLine.substring(promptLine.length - 2) !== '> ') {
+        return;
+    }
+
+    var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
+
+    var trg = '';
+    if (!trg && !!allIme.length) { trg = make_alias(allIme[0]) }
+    if (!trg && !!allVin.length) { trg = make_alias(allVin[0]) }
+    if (!trg && !!allTvo.length) { trg = make_alias(allTvo[0]) }
+    if (!trg && !!allRod.length) { trg = make_alias(allRod[0]) }
+    if (!trg && !!allDat.length) { trg = make_alias(allDat[0]) }
+    allIme = allRod = allDat = allVin = allTvo = [];
+
+    if (trg && !iFight) {
+        jmc.parse('пн ' + trg);
+    }
 }
 
-var rxHere = /^([А-Я].+) летает здесь/;
-
-trig(function (aa)  {
-    var name = name_from_titles(aa[1]);
-    jmc.showme("\x1B\[1;36m == " + name + " == ");
-}, rxHere, 'fc100:HERE1');
+trig(function () {
+    // jmc.showme('TARGET');
+}, /^:.+@/, 'f100:TARGET1');

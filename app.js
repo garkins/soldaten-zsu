@@ -94,7 +94,7 @@ function onIncoming() {
             }
         }
     }
-};
+}
 
 jmc.RegisterHandler('Load', 'onLoad()');
 
