@@ -2,14 +2,6 @@ var myName = '';
 var myProf = '';
 var botovods = ['Зурис', 'Делвин', 'Полыхай', 'Умеля', 'Трогвард', 'Шабу', 'Бельверус', 'Лотта'];
 
-// текущая версия
-var fis = new ActiveXObject('Scripting.FileSystemObject')
-    .GetFile('soldaten/_version.txt')
-    .OpenAsTextStream(1, 0);
-var version = fis.ReadLine();
-fis.Close();
-jmc.showme('Версия ' + version);
-
 // управление окошками
 var wShown = 0;
 
@@ -203,17 +195,4 @@ for (var i = 0; i < layoutTalks.length; i++) {
     trig(function (aa) {
         jmc.woutput(2, '[' + hhmm() + '] ' + aa[0]);
     }, layoutTalks[i], 'f10000:TALKS');
-}
-
-function readUrl(url) {
-    var file1 = new ActiveXObject("Microsoft.XMLHTTP");
-    file1.open("GET", url, false);
-    file1.send();
-    return file1.responseText;
-}
-
-function updateMe() {
-    var remoteVersion = readUrl('https://raw.githubusercontent.com/yuraigle/soldaten-js/main/_version.txt');
-    jmc.showme('AZAZA');
-    jmc.showme(remoteVersion);
 }
