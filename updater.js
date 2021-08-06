@@ -2,11 +2,14 @@ var remoteBase = 'https://raw.githubusercontent.com/yuraigle/soldaten-js/main/';
 var localVersion;
 var remoteVersion;
 
-var fis = new ActiveXObject('Scripting.FileSystemObject')
-    .GetFile('soldaten/_version.txt')
-    .OpenAsTextStream(1, 0);
-localVersion = parseFloat(fis.ReadLine());
-fis.Close();
+function getLocalVersion() {
+    var fis = new ActiveXObject('Scripting.FileSystemObject')
+        .GetFile('soldaten/_version.txt')
+        .OpenAsTextStream(1, 0);
+    var line = fis.ReadLine();
+    fis.Close();
+    return parseFloat(line);
+}
 
 function getRemoteVersion() {
     var req = new ActiveXObject("Microsoft.XMLHTTP");
@@ -44,6 +47,7 @@ function downloadFile(fn) {
 }
 
 function updateMe() {
+    localVersion = getLocalVersion();
     remoteVersion = getRemoteVersion();
     jmc.showme('\x1B\[0;33m' +
         'Current version: ' + localVersion + '. ' +
