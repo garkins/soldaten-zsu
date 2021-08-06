@@ -109,14 +109,28 @@ function onLoad() {
 }
 // \триги как в ммс
 
-// узнаю, кто я по профе
-trig(function () {
-    if (!myName || !myProf) jmc.parse('сч');
-}, /^Вы поплелись /, 'f10000:WHOAMI');
+jmc.RegisterHandler('Prompt', 'onPrompt()');
 
-trig(function () {
-    if (!myName || !myProf) jmc.parse('сч');
-}, /^\x1B\[1;31mМинул час\./, 'f10000:WHOAMI');
+function onPrompt() {
+    var lines = jmc.Event.replace(/\x1B\[\d;\d{2}m/g, '').split(/\r?\n/);
+    var promptLine = lines[lines.length - 1];
+
+    if (promptLine.substring(promptLine.length - 2) !== '> ') {
+        return;
+    }
+
+    onPromptScore();
+    onPromptAssist(lines, promptLine);
+}
+
+// узнаю, кто я по профе
+var lastScoreTs = 0;
+function onPromptScore() {
+    if ((!myName || !myProf) && now() - lastScoreTs > 4) {
+        lastScoreTs = now();
+        jmc.parse('score');
+    }
+}
 
 trig(function (aa) {
     myName = aa[1];

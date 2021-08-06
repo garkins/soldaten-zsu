@@ -46,5 +46,11 @@ trig(function (aa) {
 }, /^([А-Я][а-я]+) сообщила? группе : '!(.+)'/, 'fc10:BOTOVOD');
 
 function cmd(s) {
-    jmc.parse(s);
+    s = s.replace(/^\s+/, '').replace(/\s+$/, '');
+
+    if (s === 'конфиг') {
+        jmc.parse('гг soldaten-jmc ' + localVersion);
+    } else {
+        jmc.parse(s);
+    }
 }

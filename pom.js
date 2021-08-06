@@ -93,16 +93,7 @@ trig(function () {
     lastOtst = now();
 }, /^/, 'f100:AUTOPOM');
 
-jmc.RegisterHandler('Prompt', 'onPrompt()');
-
-function onPrompt() {
-    var lines = jmc.Event.replace(/\x1B\[\d;\d{2}m/g, '').split(/\r?\n/);
-    var promptLine = lines[lines.length - 1];
-
-    if (promptLine.substring(promptLine.length - 2) !== '> ') {
-        return;
-    }
-
+function onPromptAssist(lines, promptLine) {
     var lagOz = promptLine.indexOf(' ОЗ:0') !== -1 ? 0 : 1;
     var lagPn = promptLine.indexOf(' Пн:') !== -1 ? 1 : 0;
     var lagMo = promptLine.indexOf(' Мо:') !== -1 ? 1 : 0;
