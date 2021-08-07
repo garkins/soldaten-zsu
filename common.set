@@ -1,5 +1,6 @@
 #echo OFF
 #message action OFF
+#message alias OFF
 #message variable OFF
 #message hotkey OFF
 
@@ -14,6 +15,8 @@
 #hot {Alt+3} {#scr showWindow(3)} {default}
 #hot {Alt+4} {#scr showWindow(4)} {default}
 
+#hot {`} {~} {default}
+#hot {ESC} {~;вз сви.возв все;вз все;зач сви.возв} {default}
 #hot {NUM7} {ВВ} {default}
 #hot {NUM8} {СЕ} {default}
 #hot {NUM9} {сн все.НЕСБЕЖАТЬ;беж} {default}
@@ -27,6 +30,8 @@
 #alias {ц1} {#scr setTarget1('%0');долц}
 #alias {ц0} {#scr setTarget1('');долц}
 #alias {долц} {#scr sayTarget1('')}
+#alias {конфиг} {#scr sayLocalVersion()}
+#alias {обновись} {#reload}
 
 #action TEXT {Select one :} {2} {5} {default}
 #action TEXT {^ || Вы можете быть призваны.} {гг Я В РЕЖИМЕ} {5} {default}
@@ -45,3 +50,7 @@
 #action TEXT {^Вы полетели на землю от мощного удара } {вст} {5} {default}
 #action TEXT { завалил.? вас на землю. Поднимайтесь!$} {вст} {5} {default}
 #action TEXT { ловко подсек.?.? вас, усадив на попу.$} {вст} {5} {default}
+#action TEXT {^Вы слишком устали...  Спать... Спа...} {просн;вст} {5} {default}
+#action TEXT {^Сделать это в ваших снах} {просн;вст} {5} {default}
+
+#action TEXT {^[%1] ошеломить } {гг [%1]  ошеломить} {5} {default}

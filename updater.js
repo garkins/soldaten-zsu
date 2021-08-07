@@ -23,6 +23,11 @@ function getRemoteVersion() {
     return parseFloat(req.responseText);
 }
 
+function sayLocalVersion() {
+    jmc.showme('\x1B\[0;33mCurrent version: soldaten-jmc ' + localVersion);
+    jmc.parse('гг soldaten-jmc ' + localVersion);
+}
+
 function downloadFile(fn) {
     var remoteFn = remoteBase + fn + '?ts=' + now();
     var localFn = 'soldaten/' + fn;

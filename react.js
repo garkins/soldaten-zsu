@@ -20,21 +20,14 @@ for (var i = 0; i < imHungry.length; i++) {
 
 // слушаемся лидера
 trig(function (aa) {
-    if (inArray(botovods, aa[1]) && aa[2] === myName) cmd(aa[3]);
+    if (inArray(botovods, aa[1]) && aa[1] !== myName && aa[2] === myName) cmd(aa[3]);
 }, /^([А-Я][а-я]+) сообщила? группе : '([А-Я][а-я]+) (.+)'/, 'fc10:BOTOVOD');
 
 trig(function (aa) {
-    if (inArray(botovods, aa[1])) cmd(aa[2]);
+    if (inArray(botovods, aa[1]) && aa[1] !== myName) cmd(aa[2]);
 }, /^([А-Я][а-я]+) сообщила? группе : '!(.+)'/, 'fc10:BOTOVOD');
 
 function cmd(s) {
     s = s.replace(/^\s+/, '').replace(/\s+$/, '');
-
-    if (s === 'конфиг') {
-        jmc.parse('гг soldaten-jmc ' + localVersion);
-    } else if (s === 'вс1к') {
-        // jmc.parse('');
-    } else {
-        jmc.parse(s);
-    }
+    jmc.parse(s);
 }

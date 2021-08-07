@@ -91,7 +91,7 @@ var rxRodVin = [
 var lastOtst = 0;
 trig(function () {
     lastOtst = now();
-}, /^/, 'f100:AUTOPOM');
+}, /^Вы отступили из битвы/, 'f100:AUTOPOM');
 
 var lastKick = 0;
 
@@ -119,6 +119,7 @@ function onPromptAssist(lines, promptLine) {
     var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
 
     if (iFight) { return; }
+    if (now() - lastOtst < 5) { return; }
 
     var trg0 = targetFromLines(lines);
 
@@ -137,6 +138,18 @@ function targetFromLines(lines) {
         var line1 = lines[i];
         var aa;
 
+        if (aa = line1.match(rxIme2Tvo)) {
+            var ime = aa[1];
+            var tvo = aa[2];
+            ime = nameFromTitles(ime);
+
+            if (friendsTvo[tvo] && ime !== 'вы' && ime !== 'Вы' && !target0) {
+                allIme.push(ime);
+            } else if (friendsIme[ime] && tvo !== 'вами' && tvo !== 'ВАМИ' && !target0) {
+                allTvo.push(tvo);
+            }
+        }
+
         if (aa = line1.match(rxFight1)) {
             var ime = aa[1];
             var vin = aa[4];
@@ -145,18 +158,6 @@ function targetFromLines(lines) {
                 allIme.push(ime);
             } else if (friendsIme[ime] && vin !== 'вас' && vin !== 'Вас') {
                 allVin.push(vin);
-            }
-        }
-
-        if (aa = line1.match(rxIme2Tvo)) {
-            var ime = aa[1];
-            var tvo = aa[2];
-            ime = nameFromTitles(ime);
-
-            if (friendsTvo[tvo] && ime !== 'вы' && ime !== 'Вы') {
-                allIme.push(ime);
-            } else if (friendsIme[ime] && tvo !== 'вами' && tvo !== 'ВАМИ') {
-                allTvo.push(tvo);
             }
         }
 
