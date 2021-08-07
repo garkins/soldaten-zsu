@@ -12,7 +12,7 @@ for (var i = 0; i < imHungry.length; i++) {
     trig(function () {
         var ts = now();
         if (ts - lastEat > 5) {
-            jmc.parse('вз боч.синим сума;пит боч.синим;поло боч.синим сума');
+            jmc.parse('пит боч.синим');
             lastEat = ts;
         }
     }, imHungry[i], 'f1000:HUNGRY');

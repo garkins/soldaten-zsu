@@ -34,13 +34,19 @@
 #alias {обновись} {#reload}
 
 #action TEXT {Select one :} {2} {5} {default}
-#action TEXT {^ || Вы можете быть призваны.} {гг Я В РЕЖИМЕ} {5} {default}
-#action TEXT {^Автоматический грабеж трупов включен.} {гг АВТОГРАБЕЖ ON} {5} {default}
-#action TEXT {^Автоматический грабеж трупов выключен.} {гг АВТОГРАБЕЖ OFF} {5} {default}
-#action TEXT {^Вы пропали в пустоте этого мира.} {#cr} {5} {default}
 #action TEXT {ANYKEY нажмите ENTER} {#cr} {5} {default}
 #action TEXT {^Пересоединяемся.} {#cr} {5} {default}
+#action TEXT {^Вы пропали в пустоте этого мира.} {#cr} {5} {default}
 #action TEXT {^Вы мертвы! Нам очень жаль} {1} {5} {default}
+
+#action TEXT {^ || Вы можете быть призваны.} {гг Я В РЕЖИМЕ} {5} {default}
+#action TEXT {^ || Вы прикрываете %1 от нападения. } {гг КРОЮ %1 от нападения.} {5} {default}
+#action TEXT {^Вы попытаетесь прикрыть %1 от нападения.} {гг КРОЮ %1 от нападения.} {5} {default}
+#action TEXT {^Автоматический грабеж трупов включен.} {гг АВТОГРАБЕЖ ON} {5} {default}
+#action TEXT {^Автоматический грабеж трупов выключен.} {гг АВТОГРАБЕЖ OFF} {5} {default}
+#action TEXT {^%0 : следы %1} {гг %0 - следы %1} {5} {default}
+#action TEXT {^Вы получили %1} {гг Получено %1} {5} {default}
+#action TEXT {^Сегодня вы уже получали гривны за } {гг ЗДЕСЬ СЕГОДНЯ Я УЖЕ ПОЛУЧАЛ ГРИВНЫ} {5} {default}
 
 #action TEXT {^Нет... Вы слишком расслаблены...} {вст} {5} {default}
 #action TEXT {^Пожалуй, вам лучше встать на ноги.} {вст} {5} {default}
@@ -54,3 +60,5 @@
 #action TEXT {^Сделать это в ваших снах} {просн;вст} {5} {default}
 
 #action TEXT {^[%1] ошеломить } {гг [%1]  ошеломить} {5} {default}
+#action TEXT {^Вы зачитали } {#scr arm1()} {5} {default}
+#action TEXT {^Вы осушили } {#scr arm1()} {5} {default}

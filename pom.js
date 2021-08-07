@@ -124,8 +124,10 @@ function onPromptAssist(lines, promptLine) {
     var trg0 = targetFromLines(lines);
 
     if (trg0) {
-        if (!lagPn && !lagOz) {
-            jmc.parse('пн ' + trg0);
+        if (att1 === 'пнут' && !lagPn && !lagOz) {
+            jmc.parse(att1 + ' ' + trg0);
+        } else if (att1 === 'сбит' && !lagOz) {
+            jmc.parse(att1 + ' ' + trg0);
         } else {
             jmc.parse('уб ' + trg0);
         }
@@ -252,6 +254,10 @@ var target0;
 var target1;
 var att1 = 'пнут';
 
+function setAttack1(s) {
+    att1 = s;
+}
+
 function setTarget1(s) {
     target1 = s;
     target0 = s.match(/^[А-Я]/) ? '.' + s : s;
@@ -272,3 +278,11 @@ trig(function () {
         jmc.parse(att1 + ' ' + target0);
     }
 }, /^:.+@/, 'f100:TARGET1');
+
+function arm1() {
+    if (att1 === 'пнут') {
+        jmc.parse('воор ' + myName + '.ДВУРУЧ');
+    } else if (att1 === 'сбит') {
+        jmc.parse('наде ' + myName + '.ЩИТ щит');
+    }
+}
