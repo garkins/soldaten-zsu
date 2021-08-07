@@ -105,8 +105,12 @@ function onPromptKick(promptLine) {
     if (!iFight) { return; }
 
     var ts = now();
-    if (!lagPn && !lagOz && ts - lastKick > 0) {
-        jmc.parse('пн');
+    if (att1 === 'пнут' && !lagPn && !lagOz && ts - lastKick > 0) {
+        jmc.parse('пнут');
+        lastKick = ts;
+    }
+    if (att1 === 'оглу' && !lagOg && !lagOz && ts - lastKick > 0) {
+        jmc.parse('оглу');
         lastKick = ts;
     }
 }
@@ -125,6 +129,8 @@ function onPromptAssist(lines, promptLine) {
 
     if (trg0) {
         if (att1 === 'пнут' && !lagPn && !lagOz) {
+            jmc.parse(att1 + ' ' + trg0);
+        } else if (att1 === 'оглу' && !lagOg && !lagOz) {
             jmc.parse(att1 + ' ' + trg0);
         } else if (att1 === 'сбит' && !lagOz) {
             jmc.parse(att1 + ' ' + trg0);
@@ -281,6 +287,8 @@ trig(function () {
 
 function arm1() {
     if (att1 === 'пнут') {
+        jmc.parse('воор ' + myName + '.ДВУРУЧ');
+    } else if (att1 === 'оглу') {
         jmc.parse('воор ' + myName + '.ДВУРУЧ');
     } else if (att1 === 'сбит') {
         jmc.parse('наде ' + myName + '.ЩИТ щит');
