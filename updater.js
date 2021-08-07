@@ -1,6 +1,11 @@
 var remoteBase = 'https://raw.githubusercontent.com/yuraigle/soldaten-js/main/';
 var localVersion;
 var remoteVersion;
+var files2upd = [
+    '_friends.txt', '_version.txt',
+    'app.js', 'pom.js', 'react.js', 'updater.js', 'util.js',
+    'common.set', 'vityaz.set'
+];
 
 function getLocalVersion() {
     var fis = new ActiveXObject('Scripting.FileSystemObject')
@@ -57,9 +62,8 @@ function updateMe() {
     if (remoteVersion - localVersion > 0.00001) {
         jmc.showme('Updating...');
 
-        var files = ['_friends.txt', '_version.txt', 'app.js', 'pom.js', 'react.js', 'updater.js'];
-        for (var i = 0; i < files.length; i++) {
-            downloadFile(files[i]);
+        for (var i = 0; i < files2upd.length; i++) {
+            downloadFile(files2upd[i]);
         }
 
         jmc.showme('Done.');

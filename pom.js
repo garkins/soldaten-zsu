@@ -93,6 +93,24 @@ trig(function () {
     lastOtst = now();
 }, /^/, 'f100:AUTOPOM');
 
+var lastKick = 0;
+
+function onPromptKick(promptLine) {
+    var lagOz = promptLine.indexOf(' ОЗ:0') !== -1 ? 0 : 1;
+    var lagPn = promptLine.indexOf(' Пн:') !== -1 ? 1 : 0;
+    var lagMo = promptLine.indexOf(' Мо:') !== -1 ? 1 : 0;
+    var lagOg = promptLine.indexOf(' Ог:') !== -1 ? 1 : 0;
+    var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
+
+    if (!iFight) { return; }
+
+    var ts = now();
+    if (!lagPn && !lagOz && ts - lastKick > 0) {
+        jmc.parse('пн');
+        lastKick = ts;
+    }
+}
+
 function onPromptAssist(lines, promptLine) {
     var lagOz = promptLine.indexOf(' ОЗ:0') !== -1 ? 0 : 1;
     var lagPn = promptLine.indexOf(' Пн:') !== -1 ? 1 : 0;
@@ -100,12 +118,7 @@ function onPromptAssist(lines, promptLine) {
     var lagOg = promptLine.indexOf(' Ог:') !== -1 ? 1 : 0;
     var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
 
-    if (iFight) {
-        if (!lagPn && !lagOz) {
-            jmc.parse('пн');
-        }
-        return;
-    }
+    if (iFight) { return; }
 
     var trg0 = targetFromLines(lines);
 
@@ -138,7 +151,7 @@ function targetFromLines(lines) {
         if (aa = line1.match(rxIme2Tvo)) {
             var ime = aa[1];
             var tvo = aa[2];
-            ime = name_from_titles(ime);
+            ime = nameFromTitles(ime);
 
             if (friendsTvo[tvo] && ime !== 'вы' && ime !== 'Вы') {
                 allIme.push(ime);
@@ -226,14 +239,35 @@ function targetFromLines(lines) {
         }
     }
 
-    if (!!allIme.length) { return make_alias(allIme[0]) }
-    if (!!allVin.length) { return make_alias(allVin[0]) }
-    if (!!allTvo.length) { return make_alias(allTvo[0]) }
-    if (!!allRod.length) { return make_alias(allRod[0]) }
-    if (!!allDat.length) { return make_alias(allDat[0]) }
+    if (!!allIme.length) { return makeAlias(allIme[0]) }
+    if (!!allVin.length) { return makeAlias(allVin[0]) }
+    if (!!allTvo.length) { return makeAlias(allTvo[0]) }
+    if (!!allRod.length) { return makeAlias(allRod[0]) }
+    if (!!allDat.length) { return makeAlias(allDat[0]) }
     return '';
 }
 
+var target0;
+var target1;
+var att1 = 'пнут';
+
+function setTarget1(s) {
+    target1 = s;
+    target0 = s.match(/^[А-Я]/) ? '.' + s : s;
+}
+
+function sayTarget1() {
+    if (target0 && target0.match(/^\./)) {
+        jmc.parse('гг моя цель: ' + target0 + ' (игрок), использую ' + att1);
+    } else if (target0) {
+        jmc.parse('гг моя цель: ' + target0 + ', использую ' + att1);
+    } else {
+        jmc.parse('гг нет цели! помогаю танку, использую ' + att1);
+    }
+}
+
 trig(function () {
-    // jmc.showme('TARGET');
+    if (target0) {
+        jmc.parse(att1 + ' ' + target0);
+    }
 }, /^:.+@/, 'f100:TARGET1');

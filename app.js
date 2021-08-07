@@ -19,13 +19,6 @@ function showWindow(num) {
     wShown = num;
 }
 
-hideAllWindows();
-jmc.parse('#wdock 2');
-jmc.parse('#wdock 3');
-jmc.SetHotkey('alt+1', '#scr hideAllWindows()');
-jmc.SetHotkey('alt+2', '#scr showWindow(2)');
-jmc.SetHotkey('alt+3', '#scr showWindow(3)');
-
 jmc.showme('ALT+2 - окно болтовни');
 jmc.showme('ALT+3 - окно лута');
 jmc.showme('ALT+1 - закрыть окна');
@@ -98,14 +91,14 @@ function onIncoming() {
 jmc.RegisterHandler('Load', 'onLoad()');
 
 function onLoad() {
-    myName = '';
-    myProf = '';
-
     registeredTriggers = registeredTriggers.sort(function (a, b) {
         return a.priority - b.priority;
     });
 
     updateMe();
+    myName = '';
+    myProf = '';
+    jmc.parse('#read soldaten/common.set');
 }
 // \триги как в ммс
 
@@ -120,6 +113,7 @@ function onPrompt() {
     }
 
     onPromptScore();
+    onPromptKick(promptLine);
     onPromptAssist(lines, promptLine);
 }
 
@@ -133,65 +127,17 @@ function onPromptScore() {
 }
 
 trig(function (aa) {
+    var needSetup = !myProf || !myName;
+
     myName = aa[1];
     myProf = aa[2];
-    myName = myName.replace(/,.+$/, '');
-    myName = myName.replace(/^.*([А-Я][а-я]+)$/, '$1');
-}, /^Вы (.+) \(.+ ДНЗ\) \(Русич, .+, ([а-я]+) (\d+) уровня\)\.$/, 'f10000:WHOAMI');
+    myName = nameFromTitles(myName);
+
+    if (needSetup) {
+        setup(myName, myProf);
+    }
+}, /^Вы (.+) \([а-я]+ ДНЗ\) \(Русич, .+, ([а-я]+) (\d+) уровня\)\.$/, 'f10000:WHOAMI');
 // \узнаю, кто я по профе
-
-function now() {
-    return Math.floor(+new Date() / 1000);
-};
-
-function hhmm() {
-    var dd = new Date();
-    var hh = dd.getHours();
-    var mm = dd.getMinutes();
-
-    if (hh < 10) {
-        hh = '0' + hh;
-    }
-
-    if (mm < 10) {
-        mm = '0' + mm;
-    }
-
-    return hh + ':' + mm;
-};
-
-function make_alias(s) {
-    var alias = '';
-    var wn = 0;
-    var arr = s.toLowerCase().split(/[\s\-,]+/);
-
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].length >= 3 && wn < 2) {
-            alias += alias ? '.' : '';
-            alias += arr[i].substr(0, 3);
-            wn++;
-        }
-    }
-
-    return alias ? alias : s;
-};
-
-function in_array(arr, needle) {
-    for (var i = 0; i < arr.length; i++) {
-        if (needle === arr[i]) {
-            return true;
-        }
-    }
-
-    return false;
-};
-
-// Горячая голова Вигге, Отважный воин Игоревой рати (храбр ИР) => Вигге
-function name_from_titles(s) {
-    var name = s.replace(/ ?[,(].*$/, '');
-    name = name.replace(/^.*([А-Я][а-я]+)$/, '$1');
-    return name;
-};
 
 var layoutTalks = [
     /^[А-Я][а-я]+ дружине: .+$/,
@@ -209,4 +155,17 @@ for (var i = 0; i < layoutTalks.length; i++) {
     trig(function (aa) {
         jmc.woutput(2, '[' + hhmm() + '] ' + aa[0]);
     }, layoutTalks[i], 'f10000:TALKS');
+}
+
+function setup(name, prof) {
+    jmc.setVar('MYNAME', name);
+
+    var setFile = '';
+    if (prof === 'витязь') { setFile = 'vityaz.set' }
+    if (prof === 'кузнец') { setFile = 'kuznec.set' }
+    if (prof === 'богатырь') { setFile = 'bogatir.set' }
+
+    if (setFile) {
+        jmc.parse('#read soldaten/' + setFile);
+    }
 }

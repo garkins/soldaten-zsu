@@ -1,0 +1,47 @@
+#echo OFF
+#message action OFF
+#message variable OFF
+#message hotkey OFF
+
+#unvar MYNAME
+
+#wdock 2
+#wdock 3
+#wdock 4
+#scr hideAllWindows()
+#hot {Alt+1} {#scr hideAllWindows()} {default}
+#hot {Alt+2} {#scr showWindow(2)} {default}
+#hot {Alt+3} {#scr showWindow(3)} {default}
+#hot {Alt+4} {#scr showWindow(4)} {default}
+
+#hot {NUM7} {ВВ} {default}
+#hot {NUM8} {СЕ} {default}
+#hot {NUM9} {сн все.НЕСБЕЖАТЬ;беж} {default}
+#hot {NUM4} {ЗА} {default}
+#hot {NUM5} {ВЫСЛ} {default}
+#hot {NUM6} {ВО} {default}
+#hot {NUM1} {ВН} {default}
+#hot {NUM2} {ЮГ} {default}
+#hot {NUM3} {ОГЛ} {default}
+
+#alias {ц1} {#scr setTarget1('%0');долц}
+#alias {ц0} {#scr setTarget1('');долц}
+#alias {долц} {#scr sayTarget1('')}
+
+#action TEXT {Select one :} {2} {5} {default}
+#action TEXT {^ || Вы можете быть призваны.} {гг Я В РЕЖИМЕ} {5} {default}
+#action TEXT {^Автоматический грабеж трупов включен.} {гг АВТОГРАБЕЖ ON} {5} {default}
+#action TEXT {^Автоматический грабеж трупов выключен.} {гг АВТОГРАБЕЖ OFF} {5} {default}
+#action TEXT {^Вы пропали в пустоте этого мира.} {#cr} {5} {default}
+#action TEXT {ANYKEY нажмите ENTER} {#cr} {5} {default}
+#action TEXT {^Пересоединяемся.} {#cr} {5} {default}
+#action TEXT {^Вы мертвы! Нам очень жаль} {1} {5} {default}
+
+#action TEXT {^Нет... Вы слишком расслаблены...} {вст} {5} {default}
+#action TEXT {^Пожалуй, вам лучше встать на ноги.} {вст} {5} {default}
+#action TEXT {^Вам лучше встать на ноги!} {вст} {5} {default}
+#action TEXT {^Похоже, в этой позе Вы много не наколдуете.$} {вст} {5} {default}
+#action TEXT {^Вас повалило на землю.} {вст} {5} {default}
+#action TEXT {^Вы полетели на землю от мощного удара } {вст} {5} {default}
+#action TEXT { завалил.? вас на землю. Поднимайтесь!$} {вст} {5} {default}
+#action TEXT { ловко подсек.?.? вас, усадив на попу.$} {вст} {5} {default}
