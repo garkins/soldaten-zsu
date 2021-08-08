@@ -31,3 +31,15 @@ function cmd(s) {
     s = s.replace(/^\s+/, '').replace(/\s+$/, '');
     jmc.parse(s);
 }
+
+// впадаем в ярость, если умеем
+var lastRage = 0;
+function onPromptRage(promptLine) {
+    if (promptLine.indexOf(' Яр:0') !== -1) {
+        var ts = now();
+        if (ts - lastRage > 1) {
+            jmc.parse('ярос');
+            lastRage = ts;
+        }
+    }
+}
