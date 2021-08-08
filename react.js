@@ -43,3 +43,30 @@ function onPromptRage(promptLine) {
         }
     }
 }
+
+// всегда на коне
+var stepsWithoutMount = 0;
+
+trig(function () {
+    stepsWithoutMount = 0;
+}, / несет вас на своей спине\.$/, 'fc100:MOUNTED');
+
+trig(function () {
+    stepsWithoutMount = 0;
+}, /^Вы взобрались на спину /, 'fc100:MOUNTED');
+
+trig(function () {
+    stepsWithoutMount++;
+
+    var uslProf = myProf === 'кузнец' || myProf === 'витязь' || myProf === 'охотник';
+    var uslAtt = att1 !== 'сбит';
+
+    if (uslProf && uslAtt && stepsWithoutMount > 5) {
+        stepsWithoutMount = 0;
+        jmc.parse('вск');
+    }
+}, /^Вы поплелись /, 'fc100:MOUNTED');
+
+trig(function () {
+    stepsWithoutMount = -100;
+}, /^У вас нет ничего похожего на 'сап.шпор'./, 'fc100:MOUNTED');
