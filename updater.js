@@ -7,6 +7,11 @@ var files2upd = [
     'common.set', 'vityaz.set'
 ];
 
+function sayLocalVersion() {
+    jmc.showme('\x1B\[0;33mCurrent version: soldaten-jmc ' + localVersion);
+    jmc.parse('гг soldaten-jmc ' + localVersion);
+}
+
 function getLocalVersion() {
     var fis = new ActiveXObject('Scripting.FileSystemObject')
         .GetFile('soldaten/_version.txt')
@@ -17,42 +22,62 @@ function getLocalVersion() {
 }
 
 function getRemoteVersion() {
-    var req = new ActiveXObject("Microsoft.XMLHTTP");
-    req.open("GET", remoteBase + '_version.txt?ts=' + now(), false);
-    req.send();
-    return parseFloat(req.responseText);
+    var tmp = 'soldaten/_tmp.txt';
+    var url = remoteBase + '_version.txt?ts=' + now();
+    downloadFile(url, tmp);
+
+    var fso = new ActiveXObject('Scripting.FileSystemObject');
+    var ver = null;
+
+    if (fso.FileExists(tmp)) {
+        var fis = fso.GetFile(tmp).OpenAsTextStream(1, 0);
+        var line = fis.ReadLine();
+        ver = parseFloat(line);
+        fis.Close();
+        fso.DeleteFile(tmp);
+    }
+
+    return ver;
 }
 
-function sayLocalVersion() {
-    jmc.showme('\x1B\[0;33mCurrent version: soldaten-jmc ' + localVersion);
-    jmc.parse('гг soldaten-jmc ' + localVersion);
-}
+function downloadFile(url, localFn) {
+    var xr = null;
 
-function downloadFile(fn) {
-    var remoteFn = remoteBase + fn + '?ts=' + now();
-    var localFn = 'soldaten/' + fn;
+    try {
+        xr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    catch (e) {
+    }
 
-    var http = new ActiveXObject("WinHttp.WinHttpRequest.5.1");
-    http.open("GET", remoteFn, false);
-    http.send();
-
-    if (http.Status == 200) {
-        var fos = new ActiveXObject("ADODB.Stream");
-        fos.Open();
-        fos.Type = 1; // binary
-        fos.Write(http.ResponseBody);
-        fos.Position = 0;
-
-        var fs = new ActiveXObject("Scripting.FileSystemObject");
-        if (fs.FileExists(localFn)) {
-            fs.DeleteFile(localFn);
+    if (!xr) {
+        try {
+            xr = new ActiveXObject("Msxml2.XMLHTTP");
         }
+        catch (e) {
+        }
+    }
 
-        fos.SaveToFile(localFn);
-        fos.Close();
-        jmc.showme('OK: ' + fn);
+    if (xr) {
+        xr.open("GET", url, false);
+        xr.send();
+
+        if (xr.Status == 200) {
+            var fos = new ActiveXObject("ADODB.Stream");
+            fos.Open();
+            fos.Type = 1; // binary
+            fos.Write(xr.ResponseBody);
+            fos.Position = 0;
+
+            var fs = new ActiveXObject("Scripting.FileSystemObject");
+            if (fs.FileExists(localFn)) {
+                fs.DeleteFile(localFn);
+            }
+
+            fos.SaveToFile(localFn);
+            fos.Close();
+        }
     } else {
-        jmc.showme('FAIL: ' + fn);
+        jmc.showme('\x1B\[0;33mCANT DOWNLOAD FILE: ' + url);
     }
 }
 
@@ -68,7 +93,8 @@ function updateMe() {
         jmc.showme('Updating...');
 
         for (var i = 0; i < files2upd.length; i++) {
-            downloadFile(files2upd[i]);
+            var url = remoteBase + files2upd[i] + '?ts=' + now();
+            downloadFile(url, 'soldaten/' + files2upd[i]);
         }
 
         jmc.showme('Done.');
