@@ -49,12 +49,11 @@ function downloadFile(url, localFn) {
     catch (e) {
     }
 
-    if (!xr) {
-        try {
+    try {
+        if (!xr)
             xr = new ActiveXObject("Msxml2.XMLHTTP");
-        }
-        catch (e) {
-        }
+    }
+    catch (e) {
     }
 
     if (xr) {
@@ -75,10 +74,12 @@ function downloadFile(url, localFn) {
 
             fos.SaveToFile(localFn);
             fos.Close();
+            jmc.showme('OK: ' + localFn);
+            return;
         }
-    } else {
-        jmc.showme('\x1B\[0;33mCANT DOWNLOAD FILE: ' + url);
     }
+
+    jmc.showme('\x1B\[0;33mCANT DOWNLOAD FILE: ' + url);
 }
 
 function updateMe() {
