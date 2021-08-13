@@ -56,6 +56,12 @@ trig(function () {
 }, /^Вы взобрались на спину /, 'fc100:MOUNTED');
 
 trig(function () {
+    if (stepsWithoutMount > 0) {
+        jmc.parse('вско');
+    }
+}, /^Вороной жеребец \(под седлом\) /, 'fc100:MOUNTED');
+
+trig(function () {
     stepsWithoutMount++;
 
     var uslProf = myProf === 'кузнец' || myProf === 'витязь' || myProf === 'охотник';
