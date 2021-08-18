@@ -105,12 +105,16 @@ function onPromptKick(promptLine) {
     if (!iFight) { return; }
 
     var ts = now();
-    if (att1 === 'пнут' && !lagPn && !lagOz && ts - lastKick > 0) {
+    if (att1 === 'пнут' && !lagOz && !lagPn && ts - lastKick > 0) {
         jmc.parse('пнут');
         lastKick = ts;
     }
-    if (att1 === 'оглу' && !lagOg && !lagOz && ts - lastKick > 0) {
+    if (att1 === 'оглу' && !lagOz && !lagOg && ts - lastKick > 0) {
         jmc.parse('оглу');
+        lastKick = ts;
+    }
+    if (att1 === 'оглу' && !lagOz && !lagPn && lagOg && ts - lastKick > 0) {
+        jmc.parse('пнут');
         lastKick = ts;
     }
 }
