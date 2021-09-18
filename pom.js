@@ -270,7 +270,8 @@ function setAttack1(s) {
 
 function setTarget1(s) {
     target1 = s;
-    target0 = s.match(/^[А-Я]/) ? '.' + s : s;
+    target1 = target1.replace(/^\.+/, '');
+    target0 = target1.match(/^[А-Я]/) ? '.' + target1 : target1;
 }
 
 function sayTarget1() {
