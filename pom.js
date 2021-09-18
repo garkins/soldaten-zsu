@@ -289,6 +289,30 @@ trig(function () {
     }
 }, /^:.+@/, 'f100:TARGET1');
 
+trig(function (aa) {
+    if (target0 && target1 === aa[1]) {
+        jmc.parse(att1 + ' ' + target0);
+    }
+}, /^([А-Я][а-я]+) при.+ с.+\.$/, 'f100:TARGET1');
+
+trig(function (aa) {
+    if (target0 && target1 === aa[1]) {
+        jmc.parse(attack1 + ' ' + target0);
+    }
+}, /^([А-Я][а-я]+) появил.?с. из пентаграммы\.$/, 'f100:TARGET1');
+
+trig(function (aa) {
+    if (target0 && target1 === aa[1]) {
+        jmc.parse(attack1 + ' ' + target0);
+    }
+}, /^([А-Я][а-я]+) прибыл.? по вызову\.$/, 'f100:TARGET1');
+
+trig(function (aa) {
+    if (target0 && target1 === aa[1]) {
+        jmc.parse(attack1 + ' ' + target0);
+    }
+}, /^([А-Я][а-я]+) медленно появил.?с. откуда-то\.$/, 'f100:TARGET1');
+
 function arm1() {
     if (att1 === 'пнут') {
         jmc.parse('воор ' + myName + '.ДВУРУЧ');
