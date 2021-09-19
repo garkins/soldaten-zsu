@@ -298,19 +298,19 @@ trig(function (aa) {
 
 trig(function (aa) {
     if (target0 && target1 === aa[1]) {
-        jmc.parse(attack1 + ' ' + target0);
+        jmc.parse(att1 + ' ' + target0);
     }
 }, /^([А-Я][а-я]+) появил.?с. из пентаграммы\.$/, 'f100:TARGET1');
 
 trig(function (aa) {
     if (target0 && target1 === aa[1]) {
-        jmc.parse(attack1 + ' ' + target0);
+        jmc.parse(att1 + ' ' + target0);
     }
 }, /^([А-Я][а-я]+) прибыл.? по вызову\.$/, 'f100:TARGET1');
 
 trig(function (aa) {
     if (target0 && target1 === aa[1]) {
-        jmc.parse(attack1 + ' ' + target0);
+        jmc.parse(att1 + ' ' + target0);
     }
 }, /^([А-Я][а-я]+) медленно появил.?с. откуда-то\.$/, 'f100:TARGET1');
 
