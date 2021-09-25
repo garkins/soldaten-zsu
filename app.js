@@ -165,6 +165,7 @@ function setup(name, prof) {
     if (prof === 'витязь') { setFile = 'vityaz.set' }
     if (prof === 'кузнец') { setFile = 'kuznec.set' }
     if (prof === 'богатырь') { setFile = 'bogatir.set' }
+    if (prof === 'охотник') { setFile = 'ohotnik.set' }
 
     if (setFile) {
         jmc.parse('#read soldaten/' + setFile);

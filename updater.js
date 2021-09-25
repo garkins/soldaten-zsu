@@ -4,7 +4,8 @@ var remoteVersion;
 var files2upd = [
     '_friends.txt', '_version.txt',
     'app.js', 'pom.js', 'react.js', 'updater.js', 'util.js',
-    'common.set', 'vityaz.set', 'kuznec.set'
+    'common.set', 'vityaz.set', 'kuznec.set', 'bogatir.set',
+    'ohotnik.set'
 ];
 
 function sayLocalVersion() {
