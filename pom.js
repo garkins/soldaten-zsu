@@ -336,6 +336,7 @@ trig(function (aa) {
         var nameIme = strangers[aa[2]];
         if (nameIme) {
             setTarget1(nameIme);
+            jmc.parse('~');
             sayTarget1();
             jmc.parse(att1 + ' .' + nameIme);
             jmc.parse(att1 + ' .' + nameIme);

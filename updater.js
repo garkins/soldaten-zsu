@@ -5,7 +5,7 @@ var files2upd = [
     '_version.txt', '_friends.txt', '_strangers.txt',
     'app.js', 'pom.js', 'react.js', 'updater.js', 'util.js',
     'common.set', 'vityaz.set', 'kuznec.set', 'bogatir.set',
-    'ohotnik.set'
+    'ohotnik.set', 'index.txt'
 ];
 
 function sayLocalVersion() {
