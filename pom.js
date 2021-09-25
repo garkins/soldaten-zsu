@@ -4,6 +4,7 @@ var friendsRod = [];
 var friendsDat = [];
 var friendsVin = [];
 var friendsTvo = [];
+var strangers = {};
 
 var fis = new ActiveXObject('Scripting.FileSystemObject')
     .GetFile('soldaten/_friends.txt').OpenAsTextStream(1, -1);
@@ -15,6 +16,14 @@ while (!fis.AtEndOfStream) {
     friendsDat[a[2]] = 1;
     friendsVin[a[3]] = 1;
     friendsTvo[a[4]] = 1;
+}
+fis.Close();
+
+fis = new ActiveXObject('Scripting.FileSystemObject')
+    .GetFile('soldaten/_strangers.txt').OpenAsTextStream(1, -1);
+while (!fis.AtEndOfStream) {
+    var a = fis.ReadLine().split(':');
+    strangers[a[1]] = a[0];
 }
 fis.Close();
 
@@ -314,12 +323,23 @@ trig(function (aa) {
     }
 }, /^([А-Я][а-я]+) медленно появил.?с. откуда-то\.$/, 'f100:TARGET1');
 
-function arm1() {
-    if (att1 === 'пнут') {
-        jmc.parse('воор ' + myName + '.ДВУРУЧ');
-    } else if (att1 === 'оглу') {
-        jmc.parse('воор ' + myName + '.ДВУРУЧ');
-    } else if (att1 === 'сбит') {
-        jmc.parse('наде ' + myName + '.ЩИТ щит');
+trig(function (aa) {
+    if (target0 && target0.match(/^\./) && target1 === aa[1]) {
+        jmc.parse(att1 + ' ' + target0);
     }
-}
+}, /^([А-Я][а-я]+) $/, 'f200:TARGET1');
+
+// кто-то атакует, а мне не дали ПК цель
+trig(function (aa) {
+    if (!target0 || !target0.match(/^\./)) {
+        // set PK target
+        var nameIme = strangers[aa[2]];
+        if (nameIme) {
+            setTarget1(nameIme);
+            sayTarget1();
+            jmc.parse(att1 + ' .' + nameIme);
+            jmc.parse(att1 + ' .' + nameIme);
+            jmc.parse(att1 + ' .' + nameIme);
+        }
+    }
+}, /^Вы получили право (отомстить|клановой мести) ([А-Я][а-я]+)!/, 'f200:TARGET1');

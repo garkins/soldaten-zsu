@@ -44,6 +44,17 @@ function onPromptRage(promptLine) {
     }
 }
 
+// вооружиться
+function arm1() {
+    if (att1 === 'пнут') {
+        jmc.parse('воор ' + myName + '.ДВУРУЧ');
+    } else if (att1 === 'оглу') {
+        jmc.parse('воор ' + myName + '.ДВУРУЧ');
+    } else if (att1 === 'сбит') {
+        jmc.parse('наде ' + myName + '.ЩИТ щит');
+    }
+}
+
 // всегда на коне
 var stepsWithoutMount = 0;
 

@@ -2,7 +2,7 @@ var remoteBase = 'https://raw.githubusercontent.com/yuraigle/soldaten-js/main/';
 var localVersion;
 var remoteVersion;
 var files2upd = [
-    '_friends.txt', '_version.txt',
+    '_version.txt', '_friends.txt', '_strangers.txt',
     'app.js', 'pom.js', 'react.js', 'updater.js', 'util.js',
     'common.set', 'vityaz.set', 'kuznec.set', 'bogatir.set',
     'ohotnik.set'
