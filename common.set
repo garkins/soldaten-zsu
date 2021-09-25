@@ -1,65 +1,65 @@
-#echo OFF
-#message action OFF
-#message alias OFF
-#message variable OFF
-#message hotkey OFF
-
+#hot {`} {~} {soldaten1}
+#group delete soldaten1
 #unvar MYNAME
 
 #wdock 2
 #wdock 3
 #wdock 4
-#scr hideAllWindows()
-#hot {Alt+1} {#scr hideAllWindows()} {default}
-#hot {Alt+2} {#scr showWindow(2)} {default}
-#hot {Alt+3} {#scr showWindow(3)} {default}
-#hot {Alt+4} {#scr showWindow(4)} {default}
+#wshow 2 hide
+#wshow 3 hide
+#wshow 4 hide
+#hot {Alt+1} {#scr hideAllWindows()} {soldaten1}
+#hot {Alt+2} {#scr showWindow(2)} {soldaten1}
+#hot {Alt+3} {#scr showWindow(3)} {soldaten1}
+#hot {Alt+4} {#scr showWindow(4)} {soldaten1}
 
-#hot {`} {~} {default}
-#hot {ESC} {~;вз сви.возв все;вз все;зач сви.возв} {default}
-#hot {NUM7} {ВВ} {default}
-#hot {NUM8} {СЕ} {default}
-#hot {NUM9} {сн все.НЕСБЕЖАТЬ;беж} {default}
-#hot {NUM4} {ЗА} {default}
-#hot {NUM5} {ВЫСЛ} {default}
-#hot {NUM6} {ВО} {default}
-#hot {NUM1} {ВН} {default}
-#hot {NUM2} {ЮГ} {default}
-#hot {NUM3} {ОГЛ} {default}
+#hot {`} {~} {soldaten1}
+#hot {F12} {~;вз сви.возв все;вз все;зач сви.возв} {soldaten1}
+#hot {NUM7} {ВВ} {soldaten1}
+#hot {NUM8} {СЕ} {soldaten1}
+#hot {NUM4} {ЗА} {soldaten1}
+#hot {NUM6} {ВО} {soldaten1}
+#hot {NUM1} {ВН} {soldaten1}
+#hot {NUM2} {ЮГ} {soldaten1}
+#hot {NUM3} {ОГЛ} {soldaten1}
+#hot {NUM5} {ВЫСЛ} {soldaten1}
+#hot {NUM9} {сн все.НЕСБЕЖАТЬ;беж} {soldaten1}
 
-#alias {ц1} {#scr setTarget1('%0');долц}
-#alias {ц0} {#scr setTarget1('');долц}
-#alias {долц} {#scr sayTarget1('')}
-#alias {конфиг} {#scr sayLocalVersion()}
-#alias {обновись} {#reload}
+#alias {ц1} {#scr setTarget1('%0');долц} {soldaten1}
+#alias {ц0} {#scr setTarget1('');долц} {soldaten1}
+#alias {долц} {#scr sayTarget1('')} {soldaten1}
+#alias {конфиг} {#scr sayLocalVersion()} {soldaten1}
+#alias {обновись} {#reload} {soldaten1}
 
-#action TEXT {Select one :} {2} {5} {default}
-#action TEXT {ANYKEY нажмите ENTER} {#cr} {5} {default}
-#action TEXT {^Пересоединяемся.} {#cr} {5} {default}
-#action TEXT {^Вы пропали в пустоте этого мира.} {#cr} {5} {default}
-#action TEXT {^Вы мертвы! Нам очень жаль} {1} {5} {default}
+#action TEXT {Select one :} {2} {5} {soldaten1}
+#action TEXT {ANYKEY нажмите ENTER} {#cr} {5} {soldaten1}
+#action TEXT {^Пересоединяемся.} {#cr} {5} {soldaten1}
+#action TEXT {^Вы пропали в пустоте этого мира.} {#cr} {5} {soldaten1}
+#action TEXT {^Вы мертвы! Нам очень жаль} {1} {5} {soldaten1}
 
-#action TEXT {^ || Вы можете быть призваны.} {гг Я В РЕЖИМЕ} {5} {default}
-#action TEXT {^ || Вы прикрываете %1 от нападения. } {гг КРОЮ %1 от нападения.} {5} {default}
-#action TEXT {^Вы попытаетесь прикрыть %1 от нападения.} {гг КРОЮ %1 от нападения.} {5} {default}
-#action TEXT {^Автоматический грабеж трупов включен.} {гг АВТОГРАБЕЖ ON} {5} {default}
-#action TEXT {^Автоматический грабеж трупов выключен.} {гг АВТОГРАБЕЖ OFF} {5} {default}
-#action TEXT {^%0 : следы %1} {гг %0 - следы %1} {5} {default}
-#action TEXT {^Вы получили %1} {гг Получено %1} {5} {default}
-#action TEXT {^Сегодня вы уже получали гривны за } {гг ЗДЕСЬ СЕГОДНЯ Я УЖЕ ПОЛУЧАЛ ГРИВНЫ} {5} {default}
+#action TEXT {^ || Вы можете быть призваны.} {гг Я В РЕЖИМЕ} {5} {soldaten1}
+#action TEXT {^ || Вы прикрываете %1 от нападения. } {гг КРОЮ %1 от нападения.} {5} {soldaten1}
+#action TEXT {^Вы попытаетесь прикрыть %1 от нападения.} {гг КРОЮ %1 от нападения.} {5} {soldaten1}
+#action TEXT {^Автоматический грабеж трупов включен.} {гг АВТОГРАБЕЖ ON} {5} {soldaten1}
+#action TEXT {^Автоматический грабеж трупов выключен.} {гг АВТОГРАБЕЖ OFF} {5} {soldaten1}
+#action TEXT {^%0 : следы %1} {гг %0 - следы %1} {5} {soldaten1}
+#action TEXT {^Вы получили %1} {гг Получено %1} {5} {soldaten1}
+#action TEXT {^Сегодня вы уже получали гривны за } {гг ЗДЕСЬ СЕГОДНЯ Я УЖЕ ПОЛУЧАЛ ГРИВНЫ} {5} {soldaten1}
 
-#action TEXT {^Нет... Вы слишком расслаблены...} {вст} {5} {default}
-#action TEXT {^Пожалуй, вам лучше встать на ноги.} {вст} {5} {default}
-#action TEXT {^Вам лучше встать на ноги!} {вст} {5} {default}
-#action TEXT {^Похоже, в этой позе Вы много не наколдуете.$} {вст} {5} {default}
-#action TEXT {^Вас повалило на землю.} {вст} {5} {default}
-#action TEXT {^Вы полетели на землю от мощного удара } {вст} {5} {default}
-#action TEXT { завалил.? вас на землю. Поднимайтесь!$} {вст} {5} {default}
-#action TEXT { ловко подсек.?.? вас, усадив на попу.$} {вст} {5} {default}
-#action TEXT {^Вы слишком устали...  Спать... Спа...} {просн;вст} {5} {default}
-#action TEXT {^Сделать это в ваших снах} {просн;вст} {5} {default}
-#action TEXT {^Ваш %1 не в состоянии пройти туда.} {соск;отпу;гг соскочил} {5} {default}
+#action TEXT {^Нет... Вы слишком расслаблены...} {вст} {5} {soldaten1}
+#action TEXT {^Пожалуй, вам лучше встать на ноги.} {вст} {5} {soldaten1}
+#action TEXT {^Вам лучше встать на ноги!} {вст} {5} {soldaten1}
+#action TEXT {^Похоже, в этой позе Вы много не наколдуете.$} {вст} {5} {soldaten1}
+#action TEXT {^Вас повалило на землю.} {вст} {5} {soldaten1}
+#action TEXT {^Вы полетели на землю от мощного удара } {вст} {5} {soldaten1}
+#action TEXT { завалил.? вас на землю. Поднимайтесь!$} {вст} {5} {soldaten1}
+#action TEXT { ловко подсек.?.? вас, усадив на попу.$} {вст} {5} {soldaten1}
+#action TEXT {^Вы слишком устали...  Спать... Спа...} {просн;вст} {5} {soldaten1}
+#action TEXT {^Сделать это в ваших снах} {просн;вст} {5} {soldaten1}
+#action TEXT {^Ваш %1 не в состоянии пройти туда.} {соск;отпу;гг соскочил} {5} {soldaten1}
 
-#action TEXT {^[%1] ошеломить } {гг [%1]  ошеломить} {5} {default}
-#action TEXT {^Вы зачитали } {#scr arm1()} {5} {default}
-#action TEXT {^Вы осушили } {#scr arm1()} {5} {default}
+#action TEXT {^[%1] ошеломить } {гг [%1]  ошеломить} {5} {soldaten1}
+#action TEXT {^Вы зачитали } {#scr arm1()} {5} {soldaten1}
+#action TEXT {^Вы осушили } {#scr arm1()} {5} {soldaten1}
+
+#group local soldaten1
