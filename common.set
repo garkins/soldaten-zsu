@@ -1,4 +1,3 @@
-#hot {`} {~} {soldaten1}
 #group delete soldaten1
 #unvar MYNAME
 
@@ -8,28 +7,48 @@
 #wshow 2 hide
 #wshow 3 hide
 #wshow 4 hide
-#hot {Alt+1} {#scr hideAllWindows()} {soldaten1}
-#hot {Alt+2} {#scr showWindow(2)} {soldaten1}
-#hot {Alt+3} {#scr showWindow(3)} {soldaten1}
-#hot {Alt+4} {#scr showWindow(4)} {soldaten1}
+#hot {Alt+1} {#scr hideAllWindows()}
+#hot {Alt+2} {#scr showWindow(2)}
+#hot {Alt+3} {#scr showWindow(3)}
+#hot {Alt+4} {#scr showWindow(4)}
 
-#hot {`} {~} {soldaten1}
-#hot {F12} {~;вз сви.возв все;вз все;зач сви.возв} {soldaten1}
-#hot {NUM7} {ВВ} {soldaten1}
-#hot {NUM8} {СЕ} {soldaten1}
-#hot {NUM4} {ЗА} {soldaten1}
-#hot {NUM6} {ВО} {soldaten1}
-#hot {NUM1} {ВН} {soldaten1}
-#hot {NUM2} {ЮГ} {soldaten1}
-#hot {NUM3} {ОГЛ} {soldaten1}
-#hot {NUM5} {ВЫСЛ} {soldaten1}
-#hot {NUM9} {сн все.НЕСБЕЖАТЬ;беж} {soldaten1}
+#hot {`} {~}
+#hot {NUM7} {ВВ}
+#hot {NUM8} {СЕ}
+#hot {NUM4} {ЗА}
+#hot {NUM6} {ВО}
+#hot {NUM1} {ВН}
+#hot {NUM2} {ЮГ}
+#hot {NUM3} {ОГЛ}
+#hot {NUM5} {ВЫСЛ}
+#hot {NUM9} {сн все.НЕСБЕЖАТЬ;беж}
+#hot {F5} {~;вз все.труп;вз все все.труп;бро все.труп}
+#hot {F12} {~;вз сви.возв все;вз все;зач сви.возв}
 
 #alias {ц1} {#scr setTarget1('%0');долц} {soldaten1}
 #alias {ц0} {#scr setTarget1('');долц} {soldaten1}
 #alias {долц} {#scr sayTarget1('')} {soldaten1}
 #alias {конфиг} {#scr sayLocalVersion()} {soldaten1}
 #alias {обновись} {#reload} {soldaten1}
+
+#highlight {light green,b black} {^Точное попадание %0} {soldaten1}
+#highlight {light magenta,b black} {^%0 от богатырского удара %1} {soldaten1}
+#highlight {light magenta,b black} {^%0 своим оглушающим ударом сбил%1} {soldaten1}
+#highlight {light magenta,b black} {^%0 мощным ударом оглушил%1} {soldaten1}
+#highlight {light magenta,b black} {^%0 мощным ударом ошеломил%1} {soldaten1}
+#highlight {light magenta,b black} {^Одним ударом %0 повалил%1} {soldaten1}
+#highlight {light magenta,b black} {^%0 завалил%1 на землю мощным ударом%2} {soldaten1}
+#highlight {light magenta,b black} {^%0 ловко подсек%1, уронив %2} {soldaten1}
+#highlight {charcoal,b black} {^%0 уклонил%1 от попытки %2 завалить %3} {soldaten1}
+#highlight {charcoal,b black} {^%0 попытал%1 завалить %2, но %3} {soldaten1}
+#highlight {charcoal,b black} {^%0 избежал%1 попытки %2 завалить %3} {soldaten1}
+#highlight {charcoal,b black} {^%0 попытал%1 подсечь %2, но %3} {soldaten1}
+#highlight {charcoal,b black} {^%0 попытал%1 ошеломить %2, но %3} {soldaten1}
+#highlight {charcoal,b black} {^%0 попытал%1 нанести %2 удар в спину, %3} {soldaten1}
+#highlight {charcoal,b black} {^%0 не попал%1 своим оружием в спину %2} {soldaten1}
+#highlight {light cyan,b black} {^%0 замер%1 на месте!} {soldaten1}
+#highlight {light cyan,b black} {^%0 прикусил%1 язык!} {soldaten1}
+#highlight {light cyan,b black} {^%0 прилег%1 подремать.} {soldaten1}
 
 #action TEXT {Select one :} {2} {5} {soldaten1}
 #action TEXT {ANYKEY нажмите ENTER} {#cr} {5} {soldaten1}
@@ -62,4 +81,4 @@
 #action TEXT {^Вы зачитали } {#scr arm1()} {5} {soldaten1}
 #action TEXT {^Вы осушили } {#scr arm1()} {5} {soldaten1}
 
-#group local soldaten1
+#action TEXT {^Кураж прошел. Мама, лучше бы я умер} {опохм} {5} {soldaten1}
