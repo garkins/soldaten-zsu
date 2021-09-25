@@ -1,3 +1,4 @@
+index.txt
 _version.txt
 _friends.txt
 _strangers.txt
