@@ -56,30 +56,36 @@ function arm1() {
 }
 
 // всегда на коне
-var stepsWithoutMount = 0;
+var stepsUnmounted = 0;
 
 trig(function () {
-    stepsWithoutMount = 0;
-}, / несет вас на своей спине\.$/, 'fc100:MOUNTED');
+    stepsUnmounted = 0;
+}, / несет вас на своей спине\.$/, 'fc500:MOUNTED');
 
 trig(function () {
-    stepsWithoutMount = 0;
-}, /^Вы взобрались на спину /, 'fc100:MOUNTED');
+    stepsUnmounted = 0;
+}, /^Вы взобрались на спину /, 'fc500:MOUNTED');
 
 trig(function () {
-    if (stepsWithoutMount > 0) {
+    if (stepsUnmounted > 0) {
         jmc.parse('вско');
     }
-}, /^(Вороной жеребец|Лошадь) \(под седлом\) /, 'fc100:MOUNTED');
+}, /^(Вороной жеребец|Лошадь) \(под седлом\) /, 'fc500:MOUNTED');
 
 trig(function () {
-    stepsWithoutMount++;
+    jmc.parse('вско');
+}, /^У вас есть лошадь\./, 'fc500:MOUNTED');
+
+trig(function () {
+    stepsUnmounted++;
 
     var uslProf = myProf === 'кузнец' || myProf === 'витязь' || myProf === 'охотник';
     var uslAtt = att1 !== 'сбит';
 
-    if (uslProf && uslAtt && stepsWithoutMount > 5) {
-        stepsWithoutMount = 0;
+    if (uslProf && uslAtt && stepsUnmounted > 5) {
+        stepsUnmounted = 0;
         jmc.parse('вск');
     }
-}, /^Вы поплелись /, 'fc100:MOUNTED');
+}, /^Вы поплелись /, 'fc500:MOUNTED');
+
+// всегда бухой

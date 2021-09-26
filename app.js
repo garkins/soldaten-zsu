@@ -112,13 +112,14 @@ function onPrompt() {
     var promptLine = lines[lines.length - 1];
 
     if (promptLine.substring(promptLine.length - 2) !== '> ') {
-        return;
+        return; // неправильный промт
     }
 
     onPromptScore();
     onPromptRage(promptLine);
     onPromptKick(promptLine);
     onPromptAssist(lines, promptLine);
+    onPromptAffects(promptLine);
 }
 
 // узнаю, кто я по профе
@@ -172,5 +173,30 @@ function setup(name, prof) {
 
     if (setFile) {
         jmc.parse('#read soldaten/' + setFile);
+    }
+}
+
+// иногда жму "афф"
+var lastFightPrompt = 0;
+var lastAffectsTs = 0;
+function onPromptAffects(promptLine) {
+    var ts = now();
+    var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
+    if (iFight) {
+        lastFightPrompt = ts;
+    }
+
+    if (ts - lastFightPrompt < 5) {
+        return; // только что была драка, не надо лишних команд
+    }
+    if (ts - lastFightPrompt > 900) {
+        return; // давно стоим, зонинг кончился
+    }
+
+    if (ts - lastAffectsTs > 60) {
+        lastAffectsTs = ts;
+        if (Math.random() > 0.5) {
+            jmc.parse('афф');
+        }
     }
 }
