@@ -133,6 +133,7 @@ function onPromptAssist(lines, promptLine) {
     var lagPn = promptLine.indexOf(' Пн:') !== -1 ? 1 : 0;
     var lagMo = promptLine.indexOf(' Мо:') !== -1 ? 1 : 0;
     var lagOg = promptLine.indexOf(' Ог:') !== -1 ? 1 : 0;
+    var lagPz = promptLine.indexOf(' Пз:0') !== -1 ? 0 : 1;
     var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
 
     if (iFight) { return; }
@@ -141,6 +142,10 @@ function onPromptAssist(lines, promptLine) {
     var trg0 = targetFromLines(lines);
 
     if (trg0) {
+        if (!lagPz) {
+            jmc.parse('опозн ' + trg0); // прокач опознания
+        }
+
         if (att1 === 'пнут' && !lagPn && !lagOz) {
             jmc.parse(att1 + ' ' + trg0);
         } else if (att1 === 'оглу' && !lagOg && !lagOz) {
