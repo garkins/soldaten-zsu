@@ -70,7 +70,7 @@ trig(function () {
     if (stepsWithoutMount > 0) {
         jmc.parse('вско');
     }
-}, /^Вороной жеребец \(под седлом\) /, 'fc100:MOUNTED');
+}, /^(Вороной жеребец|Лошадь) \(под седлом\) /, 'fc100:MOUNTED');
 
 trig(function () {
     stepsWithoutMount++;
@@ -83,7 +83,3 @@ trig(function () {
         jmc.parse('вск');
     }
 }, /^Вы поплелись /, 'fc100:MOUNTED');
-
-trig(function () {
-    stepsWithoutMount = -100;
-}, /^У вас нет ничего похожего на 'сап.шпор'./, 'fc100:MOUNTED');
