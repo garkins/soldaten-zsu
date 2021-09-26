@@ -88,4 +88,28 @@ trig(function () {
     }
 }, /^Вы поплелись /, 'fc500:MOUNTED');
 
-// всегда бухой
+// периодически бухаю
+var lastDrink = 0;
+function onPromptDrunk(lines, promptLine) {
+    var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
+    if (iFight) { return; }
+    var lagPh = promptLine.indexOf(' Пх:0') !== -1 ? 0 : 1;
+
+    for (var i = 0; i < lines.length; i++) {
+        var line1 = lines[i];
+        if (line1.substring(0, 9) === 'Аффекты: ') {
+            var ts = now();
+
+            if (line1.indexOf('под мухой') !== -1) {
+                // ОК
+            } else if (line1.indexOf('отходняк') !== -1) {
+                if (!lagPh) {
+                    jmc.parse('опохм');
+                }
+            } else if (ts - lastDrink > 10) {
+                jmc.parse('пить самогон');
+                lastDrink = ts;
+            }
+        }
+    }
+}

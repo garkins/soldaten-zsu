@@ -118,6 +118,7 @@ function onPrompt() {
     onPromptScore();
     onPromptRage(promptLine);
     onPromptKick(promptLine);
+    onPromptDrunk(lines, promptLine);
     onPromptAssist(lines, promptLine);
     onPromptAffects(promptLine);
 }
