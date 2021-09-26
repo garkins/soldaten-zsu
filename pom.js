@@ -5,6 +5,7 @@ var friendsDat = [];
 var friendsVin = [];
 var friendsTvo = [];
 var strangers = {};
+var specmobs = {};
 
 var fis = new ActiveXObject('Scripting.FileSystemObject')
     .GetFile('soldaten/_friends.txt').OpenAsTextStream(1, -1);
@@ -24,6 +25,14 @@ fis = new ActiveXObject('Scripting.FileSystemObject')
 while (!fis.AtEndOfStream) {
     var a = fis.ReadLine().split(':');
     strangers[a[1]] = a[0];
+}
+fis.Close();
+
+fis = new ActiveXObject('Scripting.FileSystemObject')
+    .GetFile('soldaten/_specmobs.txt').OpenAsTextStream(1, -1);
+while (!fis.AtEndOfStream) {
+    var a = fis.ReadLine().split(':');
+    specmobs[a[0]] = a[1];
 }
 fis.Close();
 
@@ -113,17 +122,26 @@ function onPromptKick(promptLine) {
 
     if (!iFight) { return; }
 
+    var enemy = promptLine.substring(promptLine.lastIndexOf('['));
+    enemy = enemy.substring(1, enemy.indexOf(':'));
+
+    var noglush = specmobs[enemy] === '!глуш';
+    if (att1 === 'оглу' && noglush) {
+        jmc.showme('помечен как !глуш');
+    }
+
     var ts = now();
     if (att1 === 'пнут' && !lagOz && !lagPn && ts - lastKick > 0) {
         jmc.parse('пнут');
         lastKick = ts;
-    }
-    if (att1 === 'оглу' && !lagOz && !lagOg && ts - lastKick > 0) {
+    } else if (att1 === 'оглу' && !lagOz && !lagOg && ts - lastKick > 0 && !noglush) {
         jmc.parse('оглу');
         lastKick = ts;
-    }
-    if (att1 === 'оглу' && !lagOz && !lagPn && lagOg && ts - lastKick > 0) {
+    } else if (att1 === 'оглу' && !lagOz && !lagPn && ts - lastKick > 0) {
         jmc.parse('пнут');
+        lastKick = ts;
+    } else if (att1 === 'моло' && !lagOz && !lagMo && ts - lastKick > 0) {
+        jmc.parse('моло');
         lastKick = ts;
     }
 }
@@ -331,6 +349,12 @@ trig(function (aa) {
 trig(function (aa) {
     if (target0 && target1 === aa[1]) {
         jmc.parse(att1 + ' ' + target0);
+    }
+
+    if (inArray(relocaterDanger, aa[1])) {
+        jmc.parse('~;отст');
+        jmc.parse(att1 + ' .' + aa[1]);
+        jmc.parse('убит .' + aa[1]);
     }
 }, /^([А-Я][а-я]+) медленно появил.?с. откуда-то\.$/, 'f100:TARGET1');
 

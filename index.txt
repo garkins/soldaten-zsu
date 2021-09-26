@@ -2,6 +2,7 @@ index.txt
 _version.txt
 _friends.txt
 _strangers.txt
+_specmobs.txt
 app.js
 pom.js
 react.js
