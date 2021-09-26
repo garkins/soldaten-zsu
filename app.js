@@ -1,6 +1,13 @@
 var myName = '';
 var myProf = '';
-var botovods = ['Зурис', 'Делвин', 'Полыхай', 'Умеля', 'Трогвард', 'Шабу', 'Бельверус', 'Лотта'];
+var botovods = [
+    'Зурис', 'Делвин', 'Полыхай', 'Умеля', 'Трогвард',
+    'Шабу', 'Бельверус', 'Лотта', 'Минай', 'Боголюб'
+];
+var relocaterDanger = [
+    'Аврелия', 'Ратебор', 'Сверян', 'Малагант', 'Хорыв',
+    'Раодон', 'Дилок', 'Хиколь'
+];
 
 // управление окошками
 var wShown = 0;
@@ -109,13 +116,15 @@ function onPrompt() {
     var promptLine = lines[lines.length - 1];
 
     if (promptLine.substring(promptLine.length - 2) !== '> ') {
-        return;
+        return; // неправильный промт
     }
 
     onPromptScore();
     onPromptRage(promptLine);
     onPromptKick(promptLine);
+    onPromptDrunk(lines, promptLine);
     onPromptAssist(lines, promptLine);
+    onPromptAffects(promptLine);
 }
 
 // узнаю, кто я по профе
@@ -165,8 +174,33 @@ function setup(name, prof) {
     if (prof === 'витязь') { setFile = 'vityaz.set' }
     if (prof === 'кузнец') { setFile = 'kuznec.set' }
     if (prof === 'богатырь') { setFile = 'bogatir.set' }
+    if (prof === 'охотник') { setFile = 'ohotnik.set' }
 
     if (setFile) {
         jmc.parse('#read soldaten/' + setFile);
+    }
+}
+
+// иногда жму "афф"
+var lastFightPrompt = 0;
+var lastAffectsTs = 0;
+function onPromptAffects(promptLine) {
+    var ts = now();
+    var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
+    if (iFight) {
+        lastFightPrompt = ts;
+    }
+
+    if (ts - lastFightPrompt < 5) {
+        return; // только что была драка, не надо лишних команд
+    } else if (ts - lastFightPrompt > 900) {
+        return; // давно стоим, зонинг кончился
+    }
+
+    if (ts - lastAffectsTs > 60) {
+        lastAffectsTs = ts;
+        if (Math.random() > 0.5) {
+            jmc.parse('афф');
+        }
     }
 }

@@ -1,0 +1,5 @@
+#scr setAttack1('пнут')
+#alias лук {вз $MYNAME.ЛУК перем.сума;сн $MYNAME.ЩИТ;сн $MYNAME.ПРАЙМ;сн $MYNAME.СВЕТ;воор $MYNAME.ЛУК обе;вск;#scr setAttack1('пнут')}
+#alias щит {вз $MYNAME.ПРАЙМ перем.сума;вз $MYNAME.ЩИТ перем.сума;вз $MYNAME.СВЕТ перем.сума;сн $MYNAME.ЛУК;сн $MYNAME.ОФФ;воор $MYNAME.ПРАЙМ;наде $MYNAME.ЩИТ щит;держ $MYNAME.СВЕТ;соск;отпу;#scr setAttack1('сбит')}
+#alias вск {соско;отпу;потереть медальон;вско}
+#alias баш {щит;ц1 %0}

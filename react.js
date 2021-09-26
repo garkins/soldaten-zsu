@@ -44,35 +44,72 @@ function onPromptRage(promptLine) {
     }
 }
 
+// вооружиться
+function arm1() {
+    if (att1 === 'пнут') {
+        jmc.parse('воор ' + myName + '.ДВУРУЧ');
+    } else if (att1 === 'оглу') {
+        jmc.parse('воор ' + myName + '.ДВУРУЧ');
+    } else if (att1 === 'сбит') {
+        jmc.parse('наде ' + myName + '.ЩИТ щит');
+    }
+}
+
 // всегда на коне
-var stepsWithoutMount = 0;
+var stepsUnmounted = 0;
 
 trig(function () {
-    stepsWithoutMount = 0;
-}, / несет вас на своей спине\.$/, 'fc100:MOUNTED');
+    stepsUnmounted = 0;
+}, / несет вас на своей спине\.$/, 'fc500:MOUNTED');
 
 trig(function () {
-    stepsWithoutMount = 0;
-}, /^Вы взобрались на спину /, 'fc100:MOUNTED');
+    stepsUnmounted = 0;
+}, /^Вы взобрались на спину /, 'fc500:MOUNTED');
 
 trig(function () {
-    if (stepsWithoutMount > 0) {
+    if (stepsUnmounted > 0) {
         jmc.parse('вско');
     }
-}, /^Вороной жеребец \(под седлом\) /, 'fc100:MOUNTED');
+}, /^(Вороной жеребец|Лошадь) \(под седлом\) /, 'fc500:MOUNTED');
 
 trig(function () {
-    stepsWithoutMount++;
+    jmc.parse('вско');
+}, /^У вас есть лошадь\./, 'fc500:MOUNTED');
+
+trig(function () {
+    stepsUnmounted++;
 
     var uslProf = myProf === 'кузнец' || myProf === 'витязь' || myProf === 'охотник';
     var uslAtt = att1 !== 'сбит';
 
-    if (uslProf && uslAtt && stepsWithoutMount > 5) {
-        stepsWithoutMount = 0;
+    if (uslProf && uslAtt && stepsUnmounted > 5) {
+        stepsUnmounted = 0;
         jmc.parse('вск');
     }
-}, /^Вы поплелись /, 'fc100:MOUNTED');
+}, /^Вы поплелись /, 'fc500:MOUNTED');
 
-trig(function () {
-    stepsWithoutMount = -100;
-}, /^У вас нет ничего похожего на 'сап.шпор'./, 'fc100:MOUNTED');
+// периодически бухаю
+var lastDrink = 0;
+function onPromptDrunk(lines, promptLine) {
+    var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
+    if (iFight) { return; }
+    var lagPh = promptLine.indexOf(' Пх:0') !== -1 ? 0 : 1;
+
+    for (var i = 0; i < lines.length; i++) {
+        var line1 = lines[i];
+        if (line1.substring(0, 9) === 'Аффекты: ') {
+            var ts = now();
+
+            if (line1.indexOf('под мухой') !== -1) {
+                // ОК
+            } else if (line1.indexOf('отходняк') !== -1) {
+                if (!lagPh) {
+                    jmc.parse('опохм');
+                }
+            } else if (ts - lastDrink > 10) {
+                jmc.parse('пить самогон');
+                lastDrink = ts;
+            }
+        }
+    }
+}

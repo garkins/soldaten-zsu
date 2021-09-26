@@ -4,6 +4,8 @@ var friendsRod = [];
 var friendsDat = [];
 var friendsVin = [];
 var friendsTvo = [];
+var strangers = {};
+var specmobs = {};
 
 var fis = new ActiveXObject('Scripting.FileSystemObject')
     .GetFile('soldaten/_friends.txt').OpenAsTextStream(1, -1);
@@ -15,6 +17,22 @@ while (!fis.AtEndOfStream) {
     friendsDat[a[2]] = 1;
     friendsVin[a[3]] = 1;
     friendsTvo[a[4]] = 1;
+}
+fis.Close();
+
+fis = new ActiveXObject('Scripting.FileSystemObject')
+    .GetFile('soldaten/_strangers.txt').OpenAsTextStream(1, -1);
+while (!fis.AtEndOfStream) {
+    var a = fis.ReadLine().split(':');
+    strangers[a[1]] = a[0];
+}
+fis.Close();
+
+fis = new ActiveXObject('Scripting.FileSystemObject')
+    .GetFile('soldaten/_specmobs.txt').OpenAsTextStream(1, -1);
+while (!fis.AtEndOfStream) {
+    var a = fis.ReadLine().split(':');
+    specmobs[a[0]] = a[1];
 }
 fis.Close();
 
@@ -104,13 +122,26 @@ function onPromptKick(promptLine) {
 
     if (!iFight) { return; }
 
+    var enemy = promptLine.substring(promptLine.lastIndexOf('['));
+    enemy = enemy.substring(1, enemy.indexOf(':'));
+
+    var noglush = specmobs[enemy] === '!глуш';
+    if (att1 === 'оглу' && noglush) {
+        jmc.showme('помечен как !глуш');
+    }
+
     var ts = now();
-    if (att1 === 'пнут' && !lagPn && !lagOz && ts - lastKick > 0) {
+    if (att1 === 'пнут' && !lagOz && !lagPn && ts - lastKick > 0) {
         jmc.parse('пнут');
         lastKick = ts;
-    }
-    if (att1 === 'оглу' && !lagOg && !lagOz && ts - lastKick > 0) {
+    } else if (att1 === 'оглу' && !lagOz && !lagOg && ts - lastKick > 0 && !noglush) {
         jmc.parse('оглу');
+        lastKick = ts;
+    } else if (att1 === 'оглу' && !lagOz && !lagPn && ts - lastKick > 0) {
+        jmc.parse('пнут');
+        lastKick = ts;
+    } else if (att1 === 'моло' && !lagOz && !lagMo && ts - lastKick > 0) {
+        jmc.parse('моло');
         lastKick = ts;
     }
 }
@@ -120,6 +151,7 @@ function onPromptAssist(lines, promptLine) {
     var lagPn = promptLine.indexOf(' Пн:') !== -1 ? 1 : 0;
     var lagMo = promptLine.indexOf(' Мо:') !== -1 ? 1 : 0;
     var lagOg = promptLine.indexOf(' Ог:') !== -1 ? 1 : 0;
+    var lagPz = promptLine.indexOf(' Пз:0') !== -1 ? 0 : 1;
     var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
 
     if (iFight) { return; }
@@ -128,9 +160,15 @@ function onPromptAssist(lines, promptLine) {
     var trg0 = targetFromLines(lines);
 
     if (trg0) {
+        if (!lagPz) {
+            jmc.parse('опозн ' + trg0); // прокач опознания
+        }
+
         if (att1 === 'пнут' && !lagPn && !lagOz) {
             jmc.parse(att1 + ' ' + trg0);
         } else if (att1 === 'оглу' && !lagOg && !lagOz) {
+            jmc.parse(att1 + ' ' + trg0);
+        } else if (att1 === 'моло' && !lagMo && !lagOz) {
             jmc.parse(att1 + ' ' + trg0);
         } else if (att1 === 'сбит' && !lagOz) {
             jmc.parse(att1 + ' ' + trg0);
@@ -266,11 +304,12 @@ function setAttack1(s) {
 
 function setTarget1(s) {
     target1 = s;
-    target0 = s.match(/^[А-Я]/) ? '.' + s : s;
+    target1 = target1.replace(/^\.+/, '');
+    target0 = target1.match(/^[А-Я]/) ? '.' + target1 : target1;
 }
 
 function sayTarget1() {
-    if (target0 && target0.match(/^\./)) {
+    if (havePkTarget()) {
         jmc.parse('гг моя цель: ' + target0 + ' (игрок), использую ' + att1);
     } else if (target0) {
         jmc.parse('гг моя цель: ' + target0 + ', использую ' + att1);
@@ -279,18 +318,63 @@ function sayTarget1() {
     }
 }
 
+function havePkTarget() {
+    return target0 && target0.substring(0, 1) === '.';
+}
+
 trig(function () {
     if (target0) {
         jmc.parse(att1 + ' ' + target0);
     }
 }, /^:.+@/, 'f100:TARGET1');
 
-function arm1() {
-    if (att1 === 'пнут') {
-        jmc.parse('воор ' + myName + '.ДВУРУЧ');
-    } else if (att1 === 'оглу') {
-        jmc.parse('воор ' + myName + '.ДВУРУЧ');
-    } else if (att1 === 'сбит') {
-        jmc.parse('наде ' + myName + '.ЩИТ щит');
+trig(function (aa) {
+    if (target0 && target1 === aa[1]) {
+        jmc.parse(att1 + ' ' + target0);
     }
-}
+}, /^([А-Я][а-я]+) при.+ с.+\.$/, 'f100:TARGET1');
+
+trig(function (aa) {
+    if (target0 && target1 === aa[1]) {
+        jmc.parse(att1 + ' ' + target0);
+    }
+}, /^([А-Я][а-я]+) появил.?с. из пентаграммы\.$/, 'f100:TARGET1');
+
+trig(function (aa) {
+    if (target0 && target1 === aa[1]) {
+        jmc.parse(att1 + ' ' + target0);
+    }
+}, /^([А-Я][а-я]+) прибыл.? по вызову\.$/, 'f100:TARGET1');
+
+trig(function (aa) {
+    if (target0 && target1 === aa[1]) {
+        jmc.parse(att1 + ' ' + target0);
+    }
+
+    if (inArray(relocaterDanger, aa[1])) {
+        jmc.parse('~;отст');
+        jmc.parse(att1 + ' .' + aa[1]);
+        jmc.parse('убит .' + aa[1]);
+    }
+}, /^([А-Я][а-я]+) медленно появил.?с. откуда-то\.$/, 'f100:TARGET1');
+
+trig(function (aa) {
+    if (havePkTarget() && target1 === aa[1]) {
+        jmc.parse(att1 + ' ' + target0);
+    }
+}, /^([А-Я][а-я]+) $/, 'f200:TARGET1');
+
+// кто-то атакует, а мне не дали ПК цель
+trig(function (aa) {
+    if (!havePkTarget()) {
+        var nameIme = strangers[aa[2]];
+        if (nameIme) {
+            setTarget1(nameIme);
+            jmc.parse('~');
+            sayTarget1();
+            jmc.parse(att1 + ' .' + nameIme);
+            jmc.parse(att1 + ' .' + nameIme);
+            jmc.parse(att1 + ' .' + nameIme);
+        }
+    }
+}, /^Вы получили право (отомстить|клановой мести) ([А-Я][а-я]+)!/, 'f200:TARGET1');
