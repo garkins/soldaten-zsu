@@ -189,8 +189,7 @@ function onPromptAffects(promptLine) {
 
     if (ts - lastFightPrompt < 5) {
         return; // только что была драка, не надо лишних команд
-    }
-    if (ts - lastFightPrompt > 900) {
+    } else if (ts - lastFightPrompt > 900) {
         return; // давно стоим, зонинг кончился
     }
 
