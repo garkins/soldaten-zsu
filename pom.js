@@ -150,6 +150,8 @@ function onPromptAssist(lines, promptLine) {
             jmc.parse(att1 + ' ' + trg0);
         } else if (att1 === 'оглу' && !lagOg && !lagOz) {
             jmc.parse(att1 + ' ' + trg0);
+        } else if (att1 === 'моло' && !lagMo && !lagOz) {
+            jmc.parse(att1 + ' ' + trg0);
         } else if (att1 === 'сбит' && !lagOz) {
             jmc.parse(att1 + ' ' + trg0);
         } else {
@@ -289,13 +291,17 @@ function setTarget1(s) {
 }
 
 function sayTarget1() {
-    if (target0 && target0.match(/^\./)) {
+    if (havePkTarget()) {
         jmc.parse('гг моя цель: ' + target0 + ' (игрок), использую ' + att1);
     } else if (target0) {
         jmc.parse('гг моя цель: ' + target0 + ', использую ' + att1);
     } else {
         jmc.parse('гг нет цели! помогаю танку, использую ' + att1);
     }
+}
+
+function havePkTarget() {
+    return target0 && target0.substring(0, 1) === '.';
 }
 
 trig(function () {
@@ -329,15 +335,14 @@ trig(function (aa) {
 }, /^([А-Я][а-я]+) медленно появил.?с. откуда-то\.$/, 'f100:TARGET1');
 
 trig(function (aa) {
-    if (target0 && target0.match(/^\./) && target1 === aa[1]) {
+    if (havePkTarget() && target1 === aa[1]) {
         jmc.parse(att1 + ' ' + target0);
     }
 }, /^([А-Я][а-я]+) $/, 'f200:TARGET1');
 
 // кто-то атакует, а мне не дали ПК цель
 trig(function (aa) {
-    if (!target0 || !target0.match(/^\./)) {
-        // set PK target
+    if (!havePkTarget()) {
         var nameIme = strangers[aa[2]];
         if (nameIme) {
             setTarget1(nameIme);
