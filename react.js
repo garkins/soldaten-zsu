@@ -57,6 +57,11 @@ function arm1() {
 
 // всегда на коне
 var stepsUnmounted = 0;
+var alwaysMounted = 0;
+
+function setMounted(s) {
+    alwaysMounted = s;
+}
 
 trig(function () {
     stepsUnmounted = 0;
@@ -67,22 +72,22 @@ trig(function () {
 }, /^Вы взобрались на спину /, 'fc500:MOUNTED');
 
 trig(function () {
-    if (stepsUnmounted > 0) {
+    if (alwaysMounted && stepsUnmounted > 0) {
         jmc.parse('вско');
     }
 }, /^(Вороной жеребец|Лошадь) \(под седлом\) /, 'fc500:MOUNTED');
 
 trig(function () {
-    jmc.parse('вско');
+    if (alwaysMounted) {
+        jmc.parse('вско');
+    }
 }, /^У вас есть лошадь\./, 'fc500:MOUNTED');
 
 trig(function () {
     stepsUnmounted++;
-
-    var uslProf = myProf === 'кузнец' || myProf === 'витязь' || myProf === 'охотник';
     var uslAtt = att1 !== 'сбит';
 
-    if (uslProf && uslAtt && stepsUnmounted > 5) {
+    if (alwaysMounted && uslAtt && stepsUnmounted > 5) {
         stepsUnmounted = 0;
         jmc.parse('вск');
     }
@@ -90,6 +95,12 @@ trig(function () {
 
 // периодически бухаю
 var lastDrink = 0;
+var alwaysDrunk = 1;
+
+function setAlwaysDrunk(s) {
+    alwaysDrunk = s;
+}
+
 function onPromptDrunk(lines, promptLine) {
     var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
     if (iFight) { return; }
@@ -106,7 +117,7 @@ function onPromptDrunk(lines, promptLine) {
                 if (!lagPh) {
                     jmc.parse('опохм');
                 }
-            } else if (ts - lastDrink > 10) {
+            } else if (alwaysDrunk && ts - lastDrink > 10) {
                 jmc.parse('пить самогон');
                 lastDrink = ts;
             }

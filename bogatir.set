@@ -1,1 +1,6 @@
 #scr setAttack1('моло')
+#scr setMounted(0)
+
+#scr setAlwaysDrunk(1)
+#alias бухай {#scr setAlwaysDrunk(1);гг буду всегда пьян}
+#alias небухай {#scr setAlwaysDrunk(0);гг буду всегда трезв}
