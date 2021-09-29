@@ -146,19 +146,30 @@ function onPromptKick(promptLine) {
     }
 }
 
-function onPromptAssist(lines, promptLine) {
-    var lagOz = promptLine.indexOf(' ОЗ:0') !== -1 ? 0 : 1;
-    var lagPn = promptLine.indexOf(' Пн:') !== -1 ? 1 : 0;
-    var lagMo = promptLine.indexOf(' Мо:') !== -1 ? 1 : 0;
-    var lagOg = promptLine.indexOf(' Ог:') !== -1 ? 1 : 0;
-    var lagPz = promptLine.indexOf(' Пз:0') !== -1 ? 0 : 1;
-    var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
+var lastFresh = 0; // когда пил красное
+
+function onPromptAssist(lines, prompt) {
+    var lagOz = prompt.indexOf(' ОЗ:0') !== -1 ? 0 : 1;
+    var lagPn = prompt.indexOf(' Пн:') !== -1 ? 1 : 0;
+    var lagMo = prompt.indexOf(' Мо:') !== -1 ? 1 : 0;
+    var lagOg = prompt.indexOf(' Ог:') !== -1 ? 1 : 0;
+    var lagPz = prompt.indexOf(' Пз:0') !== -1 ? 0 : 1;
+    var iFight = prompt.indexOf(']') !== -1 ? 1 : 0;
 
     if (iFight) { return; }
-    if (now() - lastOtst < 5) { return; }
+
+    var ts = now();
+    if (ts - lastOtst < 5) { return; }
+
+    if (att1 === 'вихр' && ts - lastFresh > 20) {
+        var mov = prompt.substring(prompt.indexOf(' ') + 1, prompt.indexOf('M'));
+        if (mov < 90) {
+            jmc.parse('пить мех.красн');
+            lastFresh = ts;
+        }
+    }
 
     var trg0 = targetFromLines(lines);
-
     if (trg0) {
         if (!lagPz) {
             jmc.parse('опозн ' + trg0); // прокач опознания
@@ -174,7 +185,7 @@ function onPromptAssist(lines, promptLine) {
             jmc.parse(att1 + ' ' + trg0);
         } else if (att1 === 'вихр' && !lagOz) {
             jmc.parse(att1 + ' ' + trg0);
-        } else {
+        } else if (!lagOz) {
             jmc.parse('уб ' + trg0);
         }
     }
