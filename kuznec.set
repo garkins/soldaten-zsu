@@ -1,7 +1,10 @@
 #scr setAttack1('оглу')
-#alias двур {вз $MYNAME.ДВУРУЧ перем.сума;сн $MYNAME.ЩИТ;сн $MYNAME.ПРАЙМ;сн $MYNAME.СВЕТ;воор $MYNAME.ДВУРУЧ обе;вск;#scr setAttack1('оглу')}
+
+#alias двур {вз $MYNAME.ДВУРУЧ перем.сума;сн $MYNAME.ЩИТ;сн $MYNAME.ПРАЙМ;сн $MYNAME.СВЕТ;воор $MYNAME.ДВУРУЧ обе;вск;#scr setAttack1('оглу');долц}
 #alias щит {вз $MYNAME.ПРАЙМ перем.сума;вз $MYNAME.ЩИТ перем.сума;вз $MYNAME.СВЕТ перем.сума;сн $MYNAME.ДВУРУЧ;сн $MYNAME.ОФФ;воор $MYNAME.ПРАЙМ;наде $MYNAME.ЩИТ щит;держ $MYNAME.СВЕТ;соск;отпу;#scr setAttack1('сбит')}
 #alias вск {соско;отпу;потереть медальон;вско}
 #alias баш {щит;ц1 %0}
+#alias вихрь {#scr setAttack1('вихр');долц}
+#alias глуш {#scr setAttack1('оглу');долц}
 
 #action TEXT {^Кураж прошел. Мама, лучше бы я умер} {опохм} {5} {soldaten1}

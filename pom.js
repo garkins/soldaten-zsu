@@ -172,6 +172,8 @@ function onPromptAssist(lines, promptLine) {
             jmc.parse(att1 + ' ' + trg0);
         } else if (att1 === 'сбит' && !lagOz) {
             jmc.parse(att1 + ' ' + trg0);
+        } else if (att1 === 'вихр' && !lagOz) {
+            jmc.parse(att1 + ' ' + trg0);
         } else {
             jmc.parse('уб ' + trg0);
         }
@@ -347,6 +349,12 @@ trig(function (aa) {
 }, /^([А-Я][а-я]+) прибыл.? по вызову\.$/, 'f100:TARGET1');
 
 trig(function (aa) {
+    if (havePkTarget() && target1 === aa[1]) {
+        jmc.parse(att1 + ' ' + target0);
+    }
+}, /^([А-Я][а-я]+) $/, 'f200:TARGET1');
+
+trig(function (aa) {
     if (target0 && target1 === aa[1]) {
         jmc.parse(att1 + ' ' + target0);
     }
@@ -358,13 +366,7 @@ trig(function (aa) {
     }
 }, /^([А-Я][а-я]+) медленно появил.?с. откуда-то\.$/, 'f100:TARGET1');
 
-trig(function (aa) {
-    if (havePkTarget() && target1 === aa[1]) {
-        jmc.parse(att1 + ' ' + target0);
-    }
-}, /^([А-Я][а-я]+) $/, 'f200:TARGET1');
-
-// кто-то атакует, а мне не дали ПК цель
+// нас атакуют, а мне не дали ПК цель
 trig(function (aa) {
     if (!havePkTarget()) {
         var nameIme = strangers[aa[2]];
