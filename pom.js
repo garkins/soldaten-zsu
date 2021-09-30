@@ -113,34 +113,47 @@ trig(function () {
 
 var lastKick = 0;
 
+function parsePromptLine(prompt) {
+    var result = {};
+
+    result.hp = prompt.substring(0, prompt.indexOf('H'));
+    result.mov = prompt.substring(prompt.indexOf(' ') + 1, prompt.indexOf('M'));
+    result.iFight = prompt.indexOf(']') !== -1 ? 1 : 0;
+    result.lagOz = prompt.indexOf(' ОЗ:0') !== -1 ? 0 : 1;
+    result.lagPn = prompt.indexOf(' Пн:') !== -1 ? 1 : 0;
+    result.lagMo = prompt.indexOf(' Мо:') !== -1 ? 1 : 0;
+    result.lagOg = prompt.indexOf(' Ог:') !== -1 ? 1 : 0;
+    result.lagPz = prompt.indexOf(' Пз:0') !== -1 ? 0 : 1;
+
+    if (result.iFight) {
+        var enemy = prompt.substring(prompt.lastIndexOf('['));
+        enemy = enemy.substring(1, enemy.indexOf(':'));
+        result.enemy = enemy;
+    }
+
+    return result;
+}
+
 function onPromptKick(promptLine) {
-    var lagOz = promptLine.indexOf(' ОЗ:0') !== -1 ? 0 : 1;
-    var lagPn = promptLine.indexOf(' Пн:') !== -1 ? 1 : 0;
-    var lagMo = promptLine.indexOf(' Мо:') !== -1 ? 1 : 0;
-    var lagOg = promptLine.indexOf(' Ог:') !== -1 ? 1 : 0;
-    var iFight = promptLine.indexOf(']') !== -1 ? 1 : 0;
+    var prompt = parsePromptLine(promptLine);
+    if (!prompt.iFight) { return; }
 
-    if (!iFight) { return; }
-
-    var enemy = promptLine.substring(promptLine.lastIndexOf('['));
-    enemy = enemy.substring(1, enemy.indexOf(':'));
-
-    var noglush = specmobs[enemy] === '!глуш';
+    var noglush = specmobs[prompt.enemy] === '!глуш';
     if (att1 === 'оглу' && noglush) {
         jmc.showme('помечен как !глуш');
     }
 
     var ts = now();
-    if (att1 === 'пнут' && !lagOz && !lagPn && ts - lastKick > 0) {
+    if (att1 === 'пнут' && !prompt.lagOz && !prompt.lagPn && ts - lastKick > 0) {
         jmc.parse('пнут');
         lastKick = ts;
-    } else if (att1 === 'оглу' && !lagOz && !lagOg && ts - lastKick > 0 && !noglush) {
+    } else if (att1 === 'оглу' && !prompt.lagOz && !prompt.lagOg && ts - lastKick > 0 && !noglush) {
         jmc.parse('оглу');
         lastKick = ts;
-    } else if (att1 === 'оглу' && !lagOz && !lagPn && ts - lastKick > 0) {
+    } else if (att1 === 'оглу' && !prompt.lagOz && !prompt.lagPn && ts - lastKick > 0) {
         jmc.parse('пнут');
         lastKick = ts;
-    } else if (att1 === 'моло' && !lagOz && !lagMo && ts - lastKick > 0) {
+    } else if (att1 === 'моло' && !prompt.lagOz && !prompt.lagMo && ts - lastKick > 0) {
         jmc.parse('моло');
         lastKick = ts;
     }
@@ -148,22 +161,15 @@ function onPromptKick(promptLine) {
 
 var lastFresh = 0; // когда пил красное
 
-function onPromptAssist(lines, prompt) {
-    var lagOz = prompt.indexOf(' ОЗ:0') !== -1 ? 0 : 1;
-    var lagPn = prompt.indexOf(' Пн:') !== -1 ? 1 : 0;
-    var lagMo = prompt.indexOf(' Мо:') !== -1 ? 1 : 0;
-    var lagOg = prompt.indexOf(' Ог:') !== -1 ? 1 : 0;
-    var lagPz = prompt.indexOf(' Пз:0') !== -1 ? 0 : 1;
-    var iFight = prompt.indexOf(']') !== -1 ? 1 : 0;
-
-    if (iFight) { return; }
+function onPromptAssist(lines, promptLine) {
+    var prompt = parsePromptLine(promptLine);
+    if (prompt.iFight) { return; }
 
     var ts = now();
     if (ts - lastOtst < 5) { return; }
 
     if (att1 === 'вихр' && ts - lastFresh > 20) {
-        var mov = prompt.substring(prompt.indexOf(' ') + 1, prompt.indexOf('M'));
-        if (mov < 90) {
+        if (prompt.mov < 90) {
             jmc.parse('пить мех.красн');
             lastFresh = ts;
         }
@@ -171,21 +177,21 @@ function onPromptAssist(lines, prompt) {
 
     var trg0 = targetFromLines(lines);
     if (trg0) {
-        if (!lagPz) {
+        if (!prompt.lagPz) {
             jmc.parse('опозн ' + trg0); // прокач опознания
         }
 
-        if (att1 === 'пнут' && !lagPn && !lagOz) {
+        if (att1 === 'пнут' && !prompt.lagPn && !prompt.lagOz) {
             jmc.parse(att1 + ' ' + trg0);
-        } else if (att1 === 'оглу' && !lagOg && !lagOz) {
+        } else if (att1 === 'оглу' && !prompt.lagOg && !prompt.lagOz) {
             jmc.parse(att1 + ' ' + trg0);
-        } else if (att1 === 'моло' && !lagMo && !lagOz) {
+        } else if (att1 === 'моло' && !prompt.lagMo && !prompt.lagOz) {
             jmc.parse(att1 + ' ' + trg0);
-        } else if (att1 === 'сбит' && !lagOz) {
+        } else if (att1 === 'сбит' && !prompt.lagOz) {
             jmc.parse(att1 + ' ' + trg0);
-        } else if (att1 === 'вихр' && !lagOz) {
+        } else if (att1 === 'вихр' && !prompt.lagOz) {
             jmc.parse(att1 + ' ' + trg0);
-        } else if (!lagOz) {
+        } else if (!prompt.lagOz) {
             jmc.parse('уб ' + trg0);
         }
     }
