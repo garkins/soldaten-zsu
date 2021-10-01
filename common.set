@@ -81,3 +81,8 @@
 #action TEXT {^[%1] ошеломить } {гг [%1]  ошеломить} {5} {soldaten1}
 #action TEXT {^Вы зачитали } {#scr arm1()} {5} {soldaten1}
 #action TEXT {^Вы осушили } {#scr arm1()} {5} {soldaten1}
+
+#action TEXT {^Заклинание : лихорадка} {гг на мне лихорадка :(} {5} {soldaten1}
+#action TEXT {^Заклинание : проклятье} {гг я проклят :(} {5} {soldaten1}
+#action TEXT {^Заклинание : проклятие} {гг я проклят :(} {5} {soldaten1}
+#action TEXT {^Заклинание : слепота} {гг я слеп :(} {5} {soldaten1}
