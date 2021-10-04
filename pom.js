@@ -315,6 +315,7 @@ function targetFromLines(lines) {
 
 var target0;
 var target1;
+var target1Ts = 0;
 var att1 = 'пнут';
 
 function setAttack1(s) {
@@ -325,6 +326,7 @@ function setTarget1(s) {
     target1 = s;
     target1 = target1.replace(/^\.+/, '');
     target0 = target1.match(/^[А-Я]/) ? '.' + target1 : target1;
+    target1Ts = now();
 }
 
 function sayTarget1() {
@@ -344,6 +346,12 @@ function havePkTarget() {
 trig(function () {
     if (target0) {
         jmc.parse(att1 + ' ' + target0);
+
+        // ц1 дали и забыли, >5мин назад
+        if (!havePkTarget() && now() - target1Ts > 300) {
+            setTarget1('');
+            sayTarget1();
+        }
     }
 }, /^:.+@/, 'f100:TARGET1');
 
