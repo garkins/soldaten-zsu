@@ -115,7 +115,7 @@ function onPromptDrunk(lines, promptLine) {
                 // ОК
             } else if (line1.indexOf('отходняк') !== -1) {
                 if (!lagPh) {
-                    jmc.parse('опохм');
+                    jmc.parse('опохм самогон');
                 }
             } else if (alwaysDrunk && ts - lastDrink > 10) {
                 jmc.parse('пить самогон');
