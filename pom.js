@@ -153,9 +153,11 @@ function onPromptKick(promptLine) {
     } else if (att1 === 'оглу' && !prompt.lagOz && !prompt.lagOg && ts - lastKick > 0 && !noglush) {
         jmc.parse('оглу');
         lastKick = ts;
-    } else if (att1 === 'оглу' && !prompt.lagOz && !prompt.lagPn && ts - lastKick > 0) {
-        jmc.parse('пнут');
-        lastKick = ts;
+    } else if (att1 === 'оглу' && !prompt.lagOz && prompt.lagOg && !prompt.lagPn && ts - lastKick > 0) {
+        if (promptLine.indexOf(' Ог:1') === -1) {
+            jmc.parse('пнут');
+            lastKick = ts;
+        }
     } else if (att1 === 'моло' && !prompt.lagOz && !prompt.lagMo && ts - lastKick > 0) {
         jmc.parse('моло');
         lastKick = ts;
