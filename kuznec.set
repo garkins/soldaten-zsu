@@ -14,5 +14,3 @@
 #alias баш {щит;ц1 %0}
 #alias вихрь {#scr setAttack1('вихр');долц}
 #alias глуш {#scr setAttack1('оглу');долц}
-
-#action TEXT {^Кураж прошел. Мама, лучше бы я умер} {опохм} {5} {soldaten1}
