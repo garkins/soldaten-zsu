@@ -147,6 +147,9 @@ function onPromptKick(promptLine) {
     if (att1 === 'пнут' && !prompt.lagOz && !prompt.lagPn && ts - lastKick > 0) {
         jmc.parse('пнут');
         lastKick = ts;
+    } else if (att1 === 'вихр' && !prompt.lagOz && !prompt.lagPn && ts - lastKick > 0) {
+        jmc.parse('пнут');
+        lastKick = ts;
     } else if (att1 === 'оглу' && !prompt.lagOz && !prompt.lagOg && ts - lastKick > 0 && !noglush) {
         jmc.parse('оглу');
         lastKick = ts;
