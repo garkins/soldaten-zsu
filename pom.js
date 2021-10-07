@@ -5,7 +5,10 @@ var friendsDat = [];
 var friendsVin = [];
 var friendsTvo = [];
 var strangers = {};
+
+var zones = {};
 var specmobs = {};
+var currZoneN = 0;
 
 var fis = new ActiveXObject('Scripting.FileSystemObject')
     .GetFile('soldaten/_friends.txt').OpenAsTextStream(1, -1);
@@ -31,10 +34,25 @@ fis.Close();
 fis = new ActiveXObject('Scripting.FileSystemObject')
     .GetFile('soldaten/_specmobs.txt').OpenAsTextStream(1, -1);
 while (!fis.AtEndOfStream) {
-    var a = fis.ReadLine().split(':');
-    specmobs[a[0]] = a[1];
+    var line = fis.ReadLine();
+    if (line.indexOf('#') === 0) {
+        var zoneNum = line.substring(1, line.indexOf(' '));
+        var zoneName = line.substring(line.indexOf(' ') + 1);
+        zones[zoneName] = zoneNum;
+        specmobs[zoneNum] = {};
+    } else {
+        var a = line.split(':');
+        specmobs[zoneNum][a[0]] = a[1];
+    }
 }
 fis.Close();
+
+function setupZone(s) {
+    if (zones[s]) {
+        currZoneN = zones[s];
+        jmc.showme("\x1B\[1;35mЗона №" + currZoneN);
+    }
+}
 
 var attackWeight = [
     'легонько', 'слегка', 'сильно', 'очень сильно', 'чрезвычайно сильно',
@@ -137,30 +155,36 @@ function parsePromptLine(prompt) {
 function onPromptKick(promptLine) {
     var prompt = parsePromptLine(promptLine);
     if (!prompt.iFight) { return; }
+    if (prompt.lagOz) { return; }
 
-    var noglush = specmobs[prompt.enemy] === '!глуш';
+    var noglush = specmobs[currZoneN] && specmobs[currZoneN][prompt.enemy] === '!глуш';
     if (att1 === 'оглу' && noglush) {
         jmc.showme('помечен как !глуш');
     }
 
     var ts = now();
-    if (att1 === 'пнут' && !prompt.lagOz && !prompt.lagPn && ts - lastKick > 0) {
+    if (ts - lastKick == 0) { return; }
+
+    if (att1 === 'пнут' && !prompt.lagPn) {
         jmc.parse('пнут');
         lastKick = ts;
-    } else if (att1 === 'вихр' && !prompt.lagOz && !prompt.lagPn && ts - lastKick > 0) {
+    } else if (att1 === 'моло' && !prompt.lagMo) {
+        jmc.parse('моло');
+        lastKick = ts;
+    } else if (att1 === 'вихр' && !prompt.lagPn) {
         jmc.parse('пнут');
         lastKick = ts;
-    } else if (att1 === 'оглу' && !prompt.lagOz && !prompt.lagOg && ts - lastKick > 0 && !noglush) {
-        jmc.parse('оглу');
-        lastKick = ts;
-    } else if (att1 === 'оглу' && !prompt.lagOz && prompt.lagOg && !prompt.lagPn && ts - lastKick > 0) {
-        if (promptLine.indexOf(' Ог:1') === -1) {
+    } else if (att1 === 'оглу') {
+        if (!prompt.lagOg && !noglush) {
+            jmc.parse('оглу');
+            lastKick = ts;
+        } else if (!prompt.lagPn && noglush) {
+            jmc.parse('пнут');
+            lastKick = ts;
+        } else if (!prompt.lagPn && promptLine.indexOf(' Ог:1') === -1) {
             jmc.parse('пнут');
             lastKick = ts;
         }
-    } else if (att1 === 'моло' && !prompt.lagOz && !prompt.lagMo && ts - lastKick > 0) {
-        jmc.parse('моло');
-        lastKick = ts;
     }
 }
 

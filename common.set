@@ -89,3 +89,14 @@
 #action TEXT {^Заклинание : слепота} {гг я слеп :(} {5} {soldaten1}
 
 #action TEXT {^Кураж прошел. Мама, лучше бы я умер} {опохм самогон} {5} {soldaten1}
+
+## болтовня в 2е окно
+#action TEXT {/^[А-Я][а-я]+ дружине: .+$/} {#scr layoutTalk()} {5} {soldaten1}
+#action TEXT {/^[А-Я][а-я]+ союзникам: .+$/} {#scr layoutTalk()} {5} {soldaten1}
+#action TEXT {/^[А-Я][а-я\-]+ сказал.? : .+$/} {#scr layoutTalk()} {5} {soldaten1}
+#action TEXT {/^[А-Я][а-я\-]+ сообщил.? группе : '.+'$/} {#scr layoutTalk()} {5} {soldaten1}
+#action TEXT {/^[А-Я][а-я\-]+ сказал.? [А-Яа-я\-]+ :.+$/} {#scr layoutTalk()} {5} {soldaten1}
+#action TEXT {/^[А-Я][а-я\-]+ (закричал|заметил|заорал).? :.+$/} {#scr layoutTalk()} {5} {soldaten1}
+#action TEXT {/^\[оффтоп\] .+$/} {#scr layoutTalk()} {5} {soldaten1}
+
+#action TEXT {/^(.+) \(средний уровень: [0-9]+.*\)\.$/} {#scr setupZone('%0')} {5} {soldaten1}
