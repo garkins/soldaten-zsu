@@ -90,6 +90,8 @@
 
 #action TEXT {^Кураж прошел. Мама, лучше бы я умер} {опохм самогон} {5} {soldaten1}
 
+#action TEXT {/^(.+) \(средний уровень: [0-9]+.*\)\.$/} {#scr setupZone('%0')} {5} {soldaten1}
+
 ## болтовня в 2е окно
 #action TEXT {/^[А-Я][а-я]+ дружине: .+$/} {#scr layoutTalk()} {5} {soldaten1}
 #action TEXT {/^[А-Я][а-я]+ союзникам: .+$/} {#scr layoutTalk()} {5} {soldaten1}
@@ -99,4 +101,6 @@
 #action TEXT {/^[А-Я][а-я\-]+ (закричал|заметил|заорал).? :.+$/} {#scr layoutTalk()} {5} {soldaten1}
 #action TEXT {/^\[оффтоп\] .+$/} {#scr layoutTalk()} {5} {soldaten1}
 
-#action TEXT {/^(.+) \(средний уровень: [0-9]+.*\)\.$/} {#scr setupZone('%0')} {5} {soldaten1}
+## лут в 3е окно
+#action TEXT {/^[А-Я][а-я\-]+ взял.? .+ из трупа .+$/} {#scr layoutLoot()} {5} {soldaten1}
+#action TEXT {/^На земле остал.?с. лежать .+\.$/} {#scr layoutLoot()} {5} {soldaten1}

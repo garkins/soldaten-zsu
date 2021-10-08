@@ -26,9 +26,21 @@ function showWindow(num) {
     wShown = num;
 }
 
+jmc.showme('ALT+1 - закрыть окна');
 jmc.showme('ALT+2 - окно болтовни');
 jmc.showme('ALT+3 - окно лута');
-jmc.showme('ALT+1 - закрыть окна');
+
+function layoutTalk() {
+    jmc.woutput(2, '[' + hhmm() + '] ' + jmc.Event);
+}
+
+function layoutLoot() {
+    var line = jmc.Event;
+    if (line.indexOf(' кун из трупа ') === -1) {
+        jmc.woutput(3, '[' + hhmm() + '] ' + line);
+    }
+}
+
 // \управление окошками
 
 // триги как в ммс
@@ -148,10 +160,6 @@ trig(function (aa) {
     }
 }, /^Вы (.+) \([а-я]+ ДНЗ\) \(Русич, .+, ([а-я]+) (\d+) уровня\)\.$/, 'f10000:WHOAMI');
 // \узнаю, кто я по профе
-
-function layoutTalk() {
-    jmc.woutput(2, '[' + hhmm() + '] ' + jmc.Event);
-}
 
 function setup(name, prof) {
     jmc.setVar('MYNAME', name);
