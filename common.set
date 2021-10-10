@@ -30,6 +30,9 @@
 #alias {долц} {#scr sayTarget1('')} {soldaten1}
 #alias {конфиг} {#scr sayLocalVersion()} {soldaten1}
 #alias {обновись} {#reload} {soldaten1}
+#tabadd долц
+#tabadd конфиг
+#tabadd обновись
 
 #highlight {light green,b black} {^Точное попадание %0} {soldaten1}
 #highlight {light magenta,b black} {^%0 от богатырского удара %1} {soldaten1}
@@ -104,3 +107,6 @@
 ## лут в 3е окно
 #action TEXT {/^[А-Я][а-я\-]+ взял.? .+ из трупа .+$/} {#scr layoutLoot()} {5} {soldaten1}
 #action TEXT {/^На земле остал.?с. лежать .+\.$/} {#scr layoutLoot()} {5} {soldaten1}
+
+#var PK_TRG PKTARGETNOTSET
+#action {/^$PK_TRG /} {#scr processPk()}

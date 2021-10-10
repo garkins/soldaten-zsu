@@ -4,13 +4,12 @@ var botovods = [
     'Зурис', 'Делвин', 'Полыхай', 'Умеля', 'Трогвард',
     'Шабу', 'Бельверус', 'Лотта', 'Минай', 'Черний'
 ];
-var relocaterDanger = [
-    // 'Аврелия', 'Ратебор', 'Сверян', 'Малагант', 'Хорыв',
-    // 'Раодон', 'Дилок', 'Хиколь'
-];
 
 // управление окошками
 var wShown = 0;
+jmc.showme('ALT+1 - закрыть окна');
+jmc.showme('ALT+2 - окно болтовни');
+jmc.showme('ALT+3 - окно лута');
 
 function hideAllWindows() {
     for (var i = 0; i < 10; i++) {
@@ -26,10 +25,6 @@ function showWindow(num) {
     wShown = num;
 }
 
-jmc.showme('ALT+1 - закрыть окна');
-jmc.showme('ALT+2 - окно болтовни');
-jmc.showme('ALT+3 - окно лута');
-
 function layoutTalk() {
     jmc.woutput(2, '[' + hhmm() + '] ' + jmc.Event);
 }
@@ -40,7 +35,6 @@ function layoutLoot() {
         jmc.woutput(3, '[' + hhmm() + '] ' + line);
     }
 }
-
 // \управление окошками
 
 // триги как в ммс

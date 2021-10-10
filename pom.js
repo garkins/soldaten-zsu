@@ -356,6 +356,12 @@ function setTarget1(s) {
     target1 = target1.replace(/^\.+/, '');
     target0 = target1.match(/^[А-Я]/) ? '.' + target1 : target1;
     target1Ts = now();
+
+    if (havePkTarget()) {
+        jmc.setVar('PK_TRG', target1);
+    } else {
+        jmc.setVar('PK_TRG', 'PKTARGETNOTSET');
+    }
 }
 
 function sayTarget1() {
@@ -372,6 +378,10 @@ function havePkTarget() {
     return target0 && target0.substring(0, 1) === '.';
 }
 
+function processPk() {
+    jmc.parse(att1 + ' ' + target0);
+}
+
 trig(function () {
     if (target0) {
         jmc.parse(att1 + ' ' + target0);
@@ -383,42 +393,6 @@ trig(function () {
         }
     }
 }, /^:.+@/, 'f100:TARGET1');
-
-trig(function (aa) {
-    if (target0 && target1 === aa[1]) {
-        jmc.parse(att1 + ' ' + target0);
-    }
-}, /^([А-Я][а-я]+) при.+ с.+\.$/, 'f100:TARGET1');
-
-trig(function (aa) {
-    if (target0 && target1 === aa[1]) {
-        jmc.parse(att1 + ' ' + target0);
-    }
-}, /^([А-Я][а-я]+) появил.?с. из пентаграммы\.$/, 'f100:TARGET1');
-
-trig(function (aa) {
-    if (target0 && target1 === aa[1]) {
-        jmc.parse(att1 + ' ' + target0);
-    }
-}, /^([А-Я][а-я]+) прибыл.? по вызову\.$/, 'f100:TARGET1');
-
-trig(function (aa) {
-    if (havePkTarget() && target1 === aa[1]) {
-        jmc.parse(att1 + ' ' + target0);
-    }
-}, /^([А-Я][а-я]+) $/, 'f200:TARGET1');
-
-trig(function (aa) {
-    if (target0 && target1 === aa[1]) {
-        jmc.parse(att1 + ' ' + target0);
-    }
-
-    if (inArray(relocaterDanger, aa[1])) {
-        jmc.parse('~;отст');
-        jmc.parse(att1 + ' .' + aa[1]);
-        jmc.parse('убит .' + aa[1]);
-    }
-}, /^([А-Я][а-я]+) медленно появил.?с. откуда-то\.$/, 'f100:TARGET1');
 
 // нас атакуют, а мне не дали ПК цель
 trig(function (aa) {
