@@ -39,6 +39,7 @@
 #highlight {light magenta,b black} {^%0 своим оглушающим ударом сбил%1} {soldaten1}
 #highlight {light magenta,b black} {^%0 мощным ударом оглушил%1} {soldaten1}
 #highlight {light magenta,b black} {^%0 мощным ударом ошеломил%1} {soldaten1}
+#highlight {light magenta,b black} {/^[А-Я][а-я]+ оглушила? .+$/} {soldaten1}
 #highlight {light magenta,b black} {^Одним ударом %0 повалил%1} {soldaten1}
 #highlight {light magenta,b black} {^%0 завалил%1 на землю мощным ударом%2} {soldaten1}
 #highlight {light magenta,b black} {^%0 ловко подсек%1, уронив %2} {soldaten1}
