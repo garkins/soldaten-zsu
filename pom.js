@@ -129,6 +129,11 @@ trig(function () {
     lastOtst = now();
 }, /^Вы отступили из битвы/, 'f100:AUTOPOM');
 
+var lastTryKick = 0;
+trig(function () {
+    lastTryKick = now();
+}, /^Вы попытаетесь оглушить /, 'f100:AUTOPOM');
+
 var lastKick = 0;
 
 function parsePromptLine(prompt) {
@@ -155,7 +160,6 @@ function parsePromptLine(prompt) {
 function onPromptKick(promptLine) {
     var prompt = parsePromptLine(promptLine);
     if (!prompt.iFight) { return; }
-    if (prompt.lagOz) { return; }
 
     var noglush = specmobs[currZoneN] && specmobs[currZoneN][prompt.enemy] === '!глуш';
     if (att1 === 'оглу' && noglush) {
@@ -163,6 +167,20 @@ function onPromptKick(promptLine) {
     }
 
     var ts = now();
+
+    // попробуем заспамить глуш
+    if (att1 === 'оглу') {
+        if (!noglush && lastTryKick < ts
+            && (!prompt.lagOg || promptLine.indexOf(' Ог:1') > 0)
+            && (!prompt.lagOz || promptLine.indexOf(' ОЗ:1') > 0)
+        ) {
+            jmc.parse('оглу');
+            lastKick = ts;
+            return;
+        }
+    }
+
+    if (prompt.lagOz) { return; }
     if (ts - lastKick == 0) { return; }
 
     if (att1 === 'пнут' && !prompt.lagPn) {

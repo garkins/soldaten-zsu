@@ -152,7 +152,7 @@ trig(function (aa) {
     if (needSetup) {
         setup(myName, myProf);
     }
-}, /^Вы (.+) \([а-я]+ ДНЗ\) \(Русич, .+, ([а-я]+) (\d+) уровня\)\.$/, 'f10000:WHOAMI');
+}, /^Вы (.+) \(Русич, .+, ([а-я]+) (\d+) уровня\)\.$/, 'f10000:WHOAMI');
 // \узнаю, кто я по профе
 
 function setup(name, prof) {
