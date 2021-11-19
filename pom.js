@@ -157,6 +157,8 @@ function parsePromptLine(prompt) {
     return result;
 }
 
+var spamGlush = jmc.getVar('spamGlush');
+
 function onPromptKick(promptLine) {
     var prompt = parsePromptLine(promptLine);
     if (!prompt.iFight) { return; }
@@ -169,7 +171,7 @@ function onPromptKick(promptLine) {
     var ts = now();
 
     // попробуем заспамить глуш
-    if (att1 === 'оглу') {
+    if (att1 === 'оглу' && spamGlush !== '0') {
         if (!noglush && lastTryKick < ts
             && (!prompt.lagOg || promptLine.indexOf(' Ог:1') > 0)
             && (!prompt.lagOz || promptLine.indexOf(' ОЗ:1') > 0)
