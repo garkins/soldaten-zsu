@@ -1,10 +1,10 @@
-#scr setAttack1('оглу')
+#scr setAttack1('пнут')
 
 #scr setMounted(1)
 #alias верхом {#scr setMounted(1);гг буду всегда верхом}
 #alias пешком {#scr setMounted(0);гг буду всегда пешком}
 
-#scr setAlwaysDrunk(0)
+#scr setAlwaysDrunk(1)
 #alias бухай {#scr setAlwaysDrunk(1);гг буду всегда пьян}
 #alias небухай {#scr setAlwaysDrunk(0);гг буду всегда трезв}
 
