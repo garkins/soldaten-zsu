@@ -134,6 +134,10 @@ trig(function () {
     lastTryKick = now();
 }, /^Вы попытаетесь оглушить /, 'f100:AUTOPOM');
 
+trig(function () {
+    lastTryKick = now();
+}, /^Невозможно. Вы пытаетесь сбить /, 'f100:AUTOPOM');
+
 var lastKick = 0;
 
 function parsePromptLine(prompt) {
@@ -169,6 +173,11 @@ function onPromptKick(promptLine) {
     }
 
     var ts = now();
+
+    if (att1 === 'сбит' && lastTryKick < ts) {
+        jmc.parse('сбит ' + target1);
+        jmc.parse('сбит');
+    }
 
     // попробуем заспамить глуш
     if (att1 === 'оглу' && spamGlush !== '0') {
