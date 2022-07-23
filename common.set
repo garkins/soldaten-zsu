@@ -217,7 +217,7 @@
 #highlight {light cyan,b black} {^%0 прилег%1 подремать.} {soldaten1}
 #highlight {light cyan,b black} {^%0 повалило на землю.} {soldaten1}
 
-#action TEXT {Select one :} {2} {5} {soldaten1}
+#action TEXT {Select one :} {2;} {5} {soldaten1}
 #action TEXT {ANYKEY нажмите ENTER} {#cr} {5} {soldaten1}
 #action TEXT {^Пересоединяемся.} {#cr} {5} {soldaten1}
 #action TEXT {^Вы пропали в пустоте этого мира.} {#cr} {5} {soldaten1}
