@@ -1,4 +1,4 @@
-var remoteBase = 'https://raw.githubusercontent.com/yuraigle/soldaten-js/main/';
+var remoteBase = 'https://raw.githubusercontent.com/garkins/soldaten-zsu/zsu/';
 var localVersion;
 var remoteVersion;
 
