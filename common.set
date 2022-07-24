@@ -340,3 +340,4 @@
 
 #var PK_TRG PKTARGETNOTSET
 #action {/^$PK_TRG /} {#scr processPk()}
+#con bylins.su 4000
