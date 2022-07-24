@@ -1,30 +1,5 @@
 var myName = '';
 var myProf = '';
-var botovods = [
-    'Зурис', 'Делвин', 'Полыхай', 'Умеля', 'Трогвард',
-    'Токихаша', 'Бельверус', 'Лотта', 'Минай', 'Черний',
-    'Мадэус', 'Магуша'
-];
-
-// управление окошками
-var wShown = 0;
-jmc.showme('ALT+1 - закрыть окна');
-jmc.showme('ALT+2 - окно болтовни');
-jmc.showme('ALT+3 - окно лута');
-
-function hideAllWindows() {
-    for (var i = 0; i < 10; i++) {
-        jmc.parse('#wshow ' + i + ' hide');
-    }
-    wShown = 0;
-}
-
-function showWindow(num) {
-    if (wShown === num) { return; }
-    hideAllWindows();
-    jmc.parse('#wshow ' + num + ' show');
-    wShown = num;
-}
 
 function layoutTalk() {
     jmc.woutput(2, '[' + hhmm() + '] ' + jmc.Event);

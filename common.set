@@ -1,17 +1,6 @@
 #group delete soldaten1
 #unvar MYNAME
 
-#wdock 2
-#wdock 3
-#wdock 4
-#wshow 2 hide
-#wshow 3 hide
-#wshow 4 hide
-#hot {Alt+1} {#scr hideAllWindows()}
-#hot {Alt+2} {#scr showWindow(2)}
-#hot {Alt+3} {#scr showWindow(3)}
-#hot {Alt+4} {#scr showWindow(4)}
-
 
 #hot {F8} {сн все.НЕСБЕЖАТЬ;беж}
 #hot {F5} {~;вз все.труп;вз все все.труп;бро все.труп}
@@ -47,8 +36,7 @@
 
 #hot {Alt+1} {#wshow 1 hide} {default}
 #hot {Alt+2} {#wshow 1 show} {default}
-#hot {Alt+C} {#connect bylins.online 110} {default}
-#hot {Alt+V} {#con localhost 3000} {default}
+#hot {Alt+C} {#connect bylins.su 4000} {default}
 #hot {DIV} {огл} {default}
 #hot {Ctrl+DIV} {вых} {default}
 

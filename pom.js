@@ -5,10 +5,30 @@ var friendsDat = [];
 var friendsVin = [];
 var friendsTvo = [];
 var strangers = {};
+var botovods = [];
 
 var zones = {};
 var specmobs = {};
 var currZoneN = 0;
+
+var iniStream = new ActiveXObject("Scripting.FileSystemObject").GetFile("settings/fighter.ini").OpenAsTextStream(1);
+
+var iniMode = '';
+while (!iniStream.AtEndOfStream) {
+    var line = iniStream.ReadLine();
+    if (line === '' || line.substring(0, 1) === ';') continue;
+
+    if (line.substring(0, 1) === '[') {
+        iniMode = line.substring(1, line.length - 1);
+        continue;
+    }
+
+    if (iniMode === 'СЛУШАЮСЬ') {
+        botovods.push(line);
+    }
+}
+iniStream.Close();
+
 
 var fis = new ActiveXObject('Scripting.FileSystemObject')
     .GetFile('soldaten/_friends.txt').OpenAsTextStream(1, -1);
