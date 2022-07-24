@@ -75,7 +75,7 @@ trig(function () {
     if (alwaysMounted && stepsUnmounted > 0) {
         jmc.parse('вско');
     }
-}, /^(Вороной жеребец|Лошадь) \(под седлом\) /, 'fc500:MOUNTED');
+}, /^(Вороной жеребец|Лошадь|Богатырский конь) \(под седлом\) /, 'fc500:MOUNTED');
 
 trig(function () {
     if (alwaysMounted) {
